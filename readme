@@ -1,0 +1,13 @@
+here at fitst I made a mistake by putting origin into shm_test, but in fact it should be git_test.
+
+so when git push it cannnot find the repo.
+
+use    git remote -v   to detect this error
+
+then   git remote rm origin  to remove the mistaken origin
+
+then   git remote add origin git@github.com:songhuiming/git_test.git   to create remote origin again
+
+then   at last we can push into origin repo
+
+
