@@ -1,0 +1,7 @@
+now show how to create a remote branch in git_test
+
+1: git checkout a new branch
+
+2: git push --all
+
+that is it.
