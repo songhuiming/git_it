@@ -2,5 +2,5 @@
 2: add sth in this new branch    vi test
 3: git add test
 4: git commit -m "this is to test"
-5: git push origin newbranch
+5: git push origin newbranch (in the company git, we all the time use master)
 
