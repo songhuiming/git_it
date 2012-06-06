@@ -1,0 +1,16 @@
+be careful to copy this from online, select ssh item and then will find the following.  take care at last there is .git
+
+git@github.com:songhuiming/git_test.git
+
+
+
+Step 3: Push your commit
+
+So far everything you've done has been in your local repository, meaning you still haven't done anything on GitHub yet. To connect your local repository to your GitHub account, you will need to set a remote for your repo and push your commits to it:
+More about remotes
+
+git remote add origin git@github.com:username/Hello-World.git# Creates a remote named "origin" pointing at your GitHub repo
+git push origin master# Sends your commits in the "master" branch to GitHub
+
+Now if you look at your repository on GitHub, you will see your README has been added to it.
+
