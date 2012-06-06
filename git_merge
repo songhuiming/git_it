@@ -1,0 +1,15 @@
+1: create a new branch git_merge
+2: create a file   vi git_merge
+3: git add git_merge
+4: git commit -m "test git merge"
+5: merge with master  -----> 
+   5.1  git checkout master
+   5.2  git merge git_merge
+6: git commit master
+
+
+sometimes maybe it's necessary to avoid others push to the master. users can only push to the branch. then the owner merge them to the master
+
+is this logic right?
+
+
