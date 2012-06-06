@@ -1,0 +1,70 @@
+
+http://stackoverflow.com/questions/959477/error-when-git-push-to-github
+
+
+------------------------------------------------------
+
+have public repository at github.com with 2 branches : "master" and "test".
+
+I created new dir locally and did:
+
+[ ] git clone git@github.com:{username}/{projectname}.git
+
+Then i created new branch named "my_test" with
+
+[ ] git branch my_test
+
+and switched to it.
+
+[ ] git checkout my_test
+
+Then i merged it from my "test" branch of my public repository with
+
+[ ] git merge origin/test
+
+and it resulted in Fast forward.
+
+I made some changes and committed it. Then i tried to push local "my_test" branch to public "test" branch at github with
+
+[ ] git push git@github.com:{username}/{projectname}.git test
+
+and get this error:
+
+error: src refspec test does not match any.
+fatal: The remote end hung up unexpectedly
+error: failed to push some refs to 'git@github.com:{username}/{projectname}.git
+
+What i am doing wrong ?
+
+
+---------------------------------------------------------------------
+
+Perhaps try:
+
+git push git@github.com:{username}/{projectname}.git HEAD:test
+
+The format of the last parameter on that command line is a refspec which is a source ref followed by a colon and then the destination ref. You can also use your local branch name (my_test) instead of HEAD to be certain you're pushing the correct branch.
+
+The documentation for git push has more detail on this parameter.
+Perhaps try:
+
+git push git@github.com:{username}/{projectname}.git HEAD:test
+
+The format of the last parameter on that command line is a refspec which is a source ref followed by a colon and then the destination ref. You can also use your local branch name (my_test) instead of HEAD to be certain you're pushing the correct branch.
+
+The documentation for git push has more detail on this parameter.
+
+--------------------------------------------------------------------------
+
+Also, you don't need to type out the whole url each time you want to push. When you ran the clone, git saved that URL as 'origin', that's why you can run something like 'merge origin/test' - it means the 'test' branch on your 'origin' server. So, the simplest way to push to your server in that case would be:
+
+git push origin my_test:test
+
+That will push your local 'my_test' branch to the 'test' branch on your 'origin' server. If you had named your local branch the same as the branch on the server, then the colon is not neccesary, you can simply do:
+
+git push origin test
+
+
+
+
+
