@@ -1,0 +1,3 @@
+1: check out a new branch    git checkout -b newbranch
+2: add sth in this new branch    vi test
+3: git add test
