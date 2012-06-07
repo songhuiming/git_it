@@ -1,0 +1,4 @@
+1: how to rename the repo
+  1: online in the repo and click Admin, then just change the name and click Rename.
+  2: local change the repo dir name to the same as online name, and then git remote rm origin to remove the origin link. Then git remote add git@github.com:ur_username/ur_new_repo.git
+ 
