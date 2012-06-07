@@ -13,4 +13,9 @@
         5.2 git merge git_merge
      6: git commit master
 
- 
+
+3:  undoing things 
+     1: change your last commit    git commit --amend
+     2: if you want to unstage a file(this file is not committed), then you use   git reset HEAD fine_name
+     3: unmodify a modified file, change it back to last modified status     git checkout -- filename
+
