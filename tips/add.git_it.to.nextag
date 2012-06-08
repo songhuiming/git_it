@@ -1,7 +1,7 @@
-1: got to github@songhuiming (from sasstudyblog) and go to git_id, Admin, add collaborators, add huiming (this is for huiming.song@nextag.com), then huiming.song@nextag.com will get a email said songhuiming add huiming as collaborator
+1: got to github@songhuiming (from sasstudyblog) and go to git_it, Admin, add collaborators, add huiming (this is for huiming.song@nextag.com), then huiming.song@nextag.com will get a email said songhuiming add huiming as collaborator
 
 2: in nextag machine git-bash, in the root area input    git clone git@github.com:songhuiming/git_it.git    
 
-3:  then git_id is added into my nextag machine
+3:  then git_it is added into my nextag machine
 
 
