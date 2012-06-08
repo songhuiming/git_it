@@ -1,0 +1,4 @@
+1: will sample from visitnew table since this is more stable than rpt_pub_rpv_phrase
+
+2: usually use two weeks data to get visits revenue and clilcks for kws, and then merge with seo_kws_attr table to get selected kws. Also, we can get category from the seo_kws_attr table. That's great.
+
