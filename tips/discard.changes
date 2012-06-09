@@ -1,0 +1,7 @@
+scenario: suppose you want to make changes for program a.sas in branch_a. but you mistakenly make changes in b.sas in branch_b, and you use git add b.sas to add b.sas. Then you find you make a mistake since you want to change a.sas not b.sas. So, you need to DISCARD the changed for b.sas.
+
+how to: git checkout -- b.sas
+
+result: it will discard the changes you made for b.sas
+
+
