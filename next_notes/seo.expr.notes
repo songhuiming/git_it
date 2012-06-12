@@ -1,4 +1,10 @@
-1: will sample from visitnew table since this is more stable than rpt_pub_rpv_phrase
+1:	will sample from visitnew table since this is more stable than rpt_pub_rpv_phrase
 
-2: usually use two weeks data to get visits revenue and clilcks for kws, and then merge with seo_kws_attr table to get selected kws. Also, we can get category from the seo_kws_attr table. That's great.
+2:	usually use two weeks data to get visits revenue and clilcks for kws, and then merge with seo_kws_attr table to get selected kws. Also, we can get category from the seo_kws_attr table. That's great. Or we can use ad_node_id to get category, category_id, as we did in the experiment 13 sampling from visitnew table.
+
+3:	Sample Issue: make sure in each group, the samples are similar: like visits, revenue and clicks are close. If there are several categories, we may restrict each category has similar performance among different groups. If possible, we may increase the sample size(number of kws) to avoid bias.
+
+	but sometimes we do find even if we put strict restrictions with these kws, their recorded performance are different even without any experiments. That means, the samples are different even with no experiments deployed. Then, how to avoid this?
+
+
 
