@@ -1,0 +1,24 @@
+***  update this everyday, in this table, dont open new table. So that I can find sth easily  ***
+
+
+20120618
+jobs: 
+1: sas weekly release; 
+2: add phrase_id for Johnny's seo_expr13 data set, the work is done in folder seo13, need to modify these codes to be uniformly used by other exprs;  
+3: for the top_visits in the query table, need to find way to re-sort by high volume visits and low conversation, since conv is continuous, we need to test how to sort in this way.
+4: for seo revenue model, how to create the deployment score data? (get phrase with attrs from phrase table, and then get features like rpv from rpt_pub_rpv_custom_store table)
+5: make clear the difference of visitnew, rep_click2, rpt_pub_rpv_phrase, campaign_cost_report, campaign_revenue_report.
+
+program is in:  sas4:/usr/home/hsong/work/test/compare.visitnew.repclick2.sas
+
+visitnew: each record is for one visit, click_count is the clicks. for one visit, clicks may > 1 since people may click different products. It has keyword, pub_keywords, discard, ad_node_id, publisher_id. From ad_node_id we can get category name. from publisher_id we can restrict to seo or sem only and restrict to a given market. (in different market, phrase_id will be different, publisher_id will be different).
+
+rep_click2: data is at kw/ptitle level. it also has ad_node_id and publisher_id. it has ptitle_id so we know which product did people click. CMP_KEYWORD is the keyword. it has cpc sot we can get our revenue(in fact, here cpc is our revenue). it also has price, search_keyword, discard.
+
+rpt_pub_rpv_phrase: it has id(phrase_id), market_id, publisher_id, visits, clicks, revenue, cost, impressions, report_date, spider_visits, and report_date
+
+
+
+20120619
+jobs:
+
