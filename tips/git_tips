@@ -1,0 +1,39 @@
+***  Q1:  remove file accidentally added to the repository
+
+	filename.orig was accidentally added to repo, so how to delete them?
+
+	method 1: Please don't use this recipe if your situation is not the one described in the question. This recipe is for fixing a bad merge, and replaying your good commits onto a fixed merge.
+
+Although filter-branch will do what you want, it is quite a complex command and I would probably choose to do this with git rebase. It's probably a personal preference. filter-branch can do it in a single, slightly more complex command, whereas the rebase solution is performing the equivalent logical operations one step at a time.
+
+Try the following recipe:
+
+####################################################################################
+# create and check out a temporary branch at the location of the bad merge
+git checkout -b tmpfix <sha1-of-merge>
+
+# remove the incorrectly added file
+git rm somefile.orig
+
+# commit the amended merge
+git commit --amend
+
+# go back to the master branch
+git checkout master
+
+# replant the master branch onto the corrected merge
+git rebase tmpfix
+
+# delete the temporary branch
+git branch -d tmpfix
+####################################################################################
+
+	method 2: If you haven't committed anything since, just git rm the file and git commit --amend.
+
+If you have, git filter-branch --index-filter 'git rm --cached --ignore-unmatch filename.orig' merge-point..HEAD will go through each change from merge-point to HEAD, delete filename.orig and rewrite the change. Using --ignore-unmatch means the command won't fail if for some reason filename.orig is missing from a change. That's the recommended way from the Examples section in the git-filter-branch man page.
+
+	http://stackoverflow.com/questions/307828/git-remove-file-accidentally-added-to-the-repository
+
+
+***  Q2: 
+
