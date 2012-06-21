@@ -21,4 +21,58 @@ rpt_pub_rpv_phrase: it has id(phrase_id), market_id, publisher_id, visits, click
 
 20120619
 jobs:
+1: work on top_vis_query.sas to re-rank the data. We are trying visits/(conv+.02) to check the result. Dis with Cindy.
+2: For seo_kws_revenue model. check more details about output from EMiner. More details about decision tree. If attrs are missing, we first impute them. Then for the nominal attr variables, we transform them by group rare levels. Fot interval variables, it will not transform automatically. But we manualls do log transform for some variables. 
+3: check the git checked in code for Shirley
+4: download data from visitnew table and prepare experiments for Lawrence
+5: test the seo.visitnew.v6.exp.sas, allow gg only, no gg, and all pub_groups. It has been virified that all=gg yes+gg no. So next time it is easy to use this program directly.
+
+
+SAS DECISION TREE Stduy Notes:
+
+1:	Basic Concepts
+
+maximum branch:		maximum number of branches that you want a decision tree to generate. 2-100
+maximum depth:		maximun number of generations of nodes that you want to allow in your decision tree. 1-50
+minimum categorical size:	specify the minimum number of training obs that a categorical value must have before the category can be used in a split search.
+leaf size:	specify the minimum number of training obs that are allowed in a leaf.
+
+2:	Prune and Subtree Selection
+	1: a node will not split if:	
+		1: the node contains few obs, as specified in the Node Sample Property option
+		2: it has reached the Maximum Depth Property
+		3: no split exceeds the threshold specified in the F test or Chi-Square significance level value
+
+3:	sas help doc also list comparison of Decision Tree with CHAID, and how to approx CHAID in SAS using DT
+
+
+SAS PROC SQL  JOIN / UNION / EXCEPT  study notes
+UNION: http://support.sas.com/documentation/cdl/en/sqlproc/62086/HTML/default/viewer.htm#a001361224.htm
+PROC SQL: http://www.okstate.edu/sas/v8/sashtml/proc/zljoined.htm
+
+
+
+20120620
+jobs
+1: sas ops as required by group members, kill scr jobs and the inside sas programs
+2: check error report in sas
+3: prepare data for SEO experiments
+4: check the deletion model and deployment model--use buckets cover performance to compare different model
+5: meeting with seo team, how to make the experiment more reliable, how to get confidence about this: 
+	one way I think is use may1 to may14 as sample, then use each days data from may15-jun15 to calculate CI, or p-value or something like this.
+	one Johnny give: use sth called beta value to calcuate each kw on each day for one year period, then we can pick kws with stable and low beta value to do
+	one shenglei give: use more data
+
+
+
+20120621
+jobs
+
+
+
+
+
+
+
+
 
