@@ -35,5 +35,8 @@ If you have, git filter-branch --index-filter 'git rm --cached --ignore-unmatch 
 	http://stackoverflow.com/questions/307828/git-remove-file-accidentally-added-to-the-repository
 
 
-***  Q2: 
+***  Q2:  How to rename a remote repo, and how to download it to local  ***;
+1: go to github --> go to that repo  -->  Admin  --> change the name (like from git_sas to git_stat). You can also add collaborators there if you want. like (add collaborators, add huiming (this is for huiming.song@nextag.com), then huiming.song@nextag.com will get a email said songhuiming add huiming as collaborator).
+2: in you machine, inside .ssh or in the root dir, git clone git@github.com:songhuiming/git_stat.git
+3: then git_stat should be downloaded to your local dir. You can delete the old
 
