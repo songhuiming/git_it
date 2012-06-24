@@ -67,9 +67,47 @@ jobs
 
 20120621
 jobs
+1: check with Prathibha and zixin on how to assign revenue from keyword to each leafnode or to the adnode
+2: Cindy's question on how to pick the threshold for visits and conv?i
+3: think about the confidence: use may1 to may14 to sample, use next 4 weeks data (may15 to jun11) to calculate the pct of visits, revenue, clicks for fake test over control(this 4 weeks data has no experiments on it). Then we can calculate the confidence from these 28 data points. 
+4: prepare the deployment data for seo revenue model
+5: sample kws for expr13, thinking of how to measure the data in experiments
+
+Proc transpose study
+http://www.ats.ucla.edu/stat/sas/modules/ltow_transpose.htm
 
 
 
+20120622
+jobs
+1: prepare sas program for seo kws experiments from sas jsp
+2: prepare seo expr kws result check program for sas jsp
+3: group meeting, learn about how to access hadoop from SAS
+4: Talk with Young about how to make our results usable for them, should use srank_keyword_sr2 table
+
+SAS generate java but score part maybe problems or slow. One way is to use java libraries directly.
+
+Hadoop & Cassandra 
+H: traffice catelog
+C: which team use? how good it is?
+
+
+20120623
+jobs
+1: study again about git: remote repo, git push origin local:remote
+2: finish the program of SEO sample, learn how to use %do %until for several conditions
+3: learn about hadoop
+
+
+20120624
+jobs
+1: watch hadoop video
+2: finish visitnew download table, keep 60 day data, aggregate data in kw/report_date/category_id level, is it fine?
+3: finish the SEO expr track program and prepare for jsp
+
+
+20120625
+jobs
 
 
 
