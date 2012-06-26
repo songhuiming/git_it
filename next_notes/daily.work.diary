@@ -108,6 +108,12 @@ jobs
 
 20120625
 jobs
+1: results for L(check the result with before to make sure consistent), and prepare data for visitnew.data.incr.sas and check the historical data because it shows 23jun data is finished this morning. (1 hr)
+2: check for J's expr result: add category_id, then analyze by different category:wq
+3: check in the code to sas3, set up jsp for track part job and sas recurring task for download job
+4: one hr meeting for search solr vs the old one.
+5: sample new kws and check them in group/category level to make sure they are close.
+
 
 
 
