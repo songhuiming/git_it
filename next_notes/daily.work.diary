@@ -116,7 +116,41 @@ jobs
 
 
 
+20120626
+jobs
+1: sas 736 weekly deploy and send out for verify
+2: CJ's code change in sas server. sas ops
+3: double check the seo program in sas3, since yesterday copy was removed by sas weekly release. Several things to take care: 1)the downloaded visitnew table should be pay attention, in the code replace all "temp_hsong" by "temp_sasprod"  2)a good way is when deploy codes, set data path the same as sasprod did.
+4: check J's experiment result at each catid. first add category_id into the sample data, then just in seo.visitnew.v6.exp.sas, in "data to_report" part add "where category_id=3". That's it! Then do it for each category. (the check job is done in sas3 seo8b)
+5: Prepare for the seo_kws_revenue model meeting: check with Y more detailed about how currently he use the kws(aggregate data from rep_click2 at kw/node level, then pick whose clicks>=2 in last 2 months). 
+Things to do: 1)check the true_target_revenue, true_sem_revenue and proj_target_revenue, find a scale to balance sem_revenue and proj_target_revenue 2)sas prod read access to table srank_keyword_sr
 
+If SAS code is copied to sasprod before really checked in, it's better to make a copy in my own folder. otherwise after weekly release, all codes and the dir will be removed.
+
+
+
+20120627
+jobs
+
+
+
+20120628
+jobs
+
+
+
+20120629
+jobs
+
+
+
+20120630
+jobs
+
+
+
+20120701
+jobs
 
 
 
