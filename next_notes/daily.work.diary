@@ -131,6 +131,13 @@ If SAS code is copied to sasprod before really checked in, it's better to make a
 
 20120627
 jobs
+1: check for J if the high visits kws (like visits>10) differs from the low ones(1 hr). It shows the result is similar to the total. Fow visits<=10 kws, their drop is smaller than the high volume kws. but these low volume kws has only a small proportion of visits, revenue and clicks. Sample new kws for seo team for experiment 12(12b).
+2: download attrs and check the result, forward err msg, kick off job for xd in sas5, file cc to read srank table
+3: test seo model without transformation, give the summary result(in sas5, deploy.bucket.compare.sas delete.bucket.compare.sas and check.sas to give sum of p_target_rev). 
+4: Try to pick a good value for the seo sample code, top button like 95%, 97% or 99% quantile? (did in sas3, seo.kws.expr.samp.sasjsp.sas). Conclusion is: For deploy model, use attrs and sem_prior_rev in the model without log transformation. For deletion model, if cares about 0 bucket coverage, then use log transform; if cares about error terms, use no log transform.
+
+SAS: how to calculate percentiles not automatically?
+http://www.ats.ucla.edu/stat/sas/faq/percentiles.htm
 
 
 
