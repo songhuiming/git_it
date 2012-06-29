@@ -143,6 +143,11 @@ http://www.ats.ucla.edu/stat/sas/faq/percentiles.htm
 
 20120628
 jobs
+1: improve the seo.kws.expr.samp.sasjsp.sas code. Previously I use the condition (median visits<=visits<=95% percentile visits)  and  (median revenue <=visits<=95% percentile revenue) to pick the sample pool. This pool its revenue is about 29.66% revenue of all. Then we can 95% to 99% percentiles separately to test, it shows 98% percentile will cover about 44% of rev, 99% percentile will cover about 53% of rev (the detailed is in sas3(/work/seo/seo>seo.kws.expr.samp.sasjsp.sas). So at last we will pick 98% percentile. (2 hrs).More details is in today's email sent out.
+2: improve the codes for seo.visitnew.v6.expr.sas. Use S to simply the codes by using proc summary rather than using data steps to do it.
+3: Improve the seo revenue model
+
+Check: proc summary, class , var ,  mean=,  what is that mean really for:  
 
 
 
