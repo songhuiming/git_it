@@ -24,3 +24,12 @@
      1: using git reflog to find the original HEAD you want to go to ( referenced as HEAD@{0} )
      2: git reset --hard HEAD@{n}
      This is very helpful for you to go whereever you want to go
+
+
+5: How to remove sensitive data, like passwd from repo and repo history
+	https://help.github.com/articles/remove-sensitive-data
+		git rm
+		git filter-branch
+	Also here shows how to remove it from local repo
+
+     
