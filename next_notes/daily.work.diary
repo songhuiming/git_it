@@ -153,6 +153,9 @@ Check: proc summary, class , var ,  mean=,  what is that mean really for:
 
 20120629
 jobs
+1: seo revenue model, clicks and revenue are highly correlated, need to remove one in the model to avoid multi-collinarity. In this way, we will re-evaluate the model
+2: check the top_vis_query to find a solution
+3: 
 
 
 
@@ -163,6 +166,63 @@ jobs
 
 20120701
 jobs
+
+
+
+20120702
+jobs
+
+
+
+20120703
+jobs
+
+
+
+20120704
+jobs
+
+
+
+20120705
+jobs
+
+
+
+20120706
+jobs
+
+
+
+20120707
+jobs
+
+
+
+20120708
+jobs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
