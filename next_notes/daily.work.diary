@@ -171,6 +171,9 @@ jobs
 
 20120702
 jobs
+1: check the errors for seo_revenue model: in the validate output, log_target_revenue is the transform of target revenue, P_log_target_revenue is the prediction of log_target_revenue, R_log_target_revenue is the error of log_target_revenue and P_log_target_revenue. V_log_target_revenue is the same as log_target_revenue.
+2: meeting with SL, should finalize the seo_revenue jobs this week. In the future there may be other works from WZC.
+3: check SEO exp results for J. by category it shows for some categories the visits increase. By theorey, Cat "others" sbould be less than 10% in all. But when aggregate into kws level, it increased to about 21% by counts. and it is over 40% for visits revenue clicks. Why? one reason I think is one phrase was mapped to several category_id and proc summary only picks the largest one. Any other reason? If have time, it's good to drill on this question.
 
 
 
