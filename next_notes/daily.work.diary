@@ -179,16 +179,25 @@ jobs
 
 20120703
 jobs
-
+1: schedule sas jobs for SB, kick off jobs for Sam
+2: an error in sas weekly releae: when ftp from my desktop to server using ftp type as TEXT, this causes the error. should use DEFAULT. But when ftp csv file from windows to unix, use text otherwise there will be symbol like ^M.
+3: Meeting with J and SL for seo revenue model. asjust the p_log_target_revenue by mean(exp(r_log_target_revenue)) or using the ratio of sum(target_revenue)/sum(p_target_revenue) from training data to adjust data
+4: combine the code prep.seo.score.deployment.sas and prep.seo.score.deletion.sas into prep.seo.score.data.sas in SAS3 and finalize this code. 
 
 
 20120704
 jobs
+Holiday. Learn R: aggregate, merge  v.s. SAS: proc summary, merge
 
 
 
 20120705
 jobs
+1: check the result of seo revenue model. If the adjusted coefficient use mean(exp(r_log_target_revenue)) then the adjusted predicted target revenue will be very large since mean(exp(r_log_target_revenue)) is over 200.
+So, maybe it is better to use ratio = sum(target_revenue)/sum(exp(p_log_target_revenue)) as the adjusted coefficient. 
+log_transform: deletion model with log_other_revenue_prior or  without it, check the sign of coefficient
+no_transform: deletion model with other_revenue_prior or without it, check the sign of coefficient
+
 
 
 
