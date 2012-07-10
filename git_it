@@ -32,4 +32,8 @@
 		git filter-branch
 	Also here shows how to remove it from local repo
 
+
+6: vim: how to replace a line? e.g., I need to replace all "," in the following line into blanks:
+payer_id, fsid, payer_name, category_id, ticket_revenue_percentage, revenue_percentage, revenue, gross_sales, ticket_qty, order_qty
+in vim, it is done by:  :.s/,/ /g
      
