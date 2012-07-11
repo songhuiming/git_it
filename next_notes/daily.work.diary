@@ -225,9 +225,17 @@ jobs
 
 
 
-20120708
+20120710
 jobs
+1: in cpa_items, for jan2012, final_commission is missing for all, calculated_commission=commission_percent*gross_sales. so, how to get commission for the excel file?
+2: for data clk_1201, order_size cost over payer_id category_id is similar to the result in the excel file.
+3: it's also checked revenue from revenue details tables is different from the commission in the excel file
+4: when merge cpa_items with click_1201, there are some obs only in cpa_items not in click_1201, which means those obs have no clicks but got cpa. Does this mean they are from the previous month clicks? or why?
+5: recovery data in table TN-Jan-Cat, still Sarvesh did not explain clearly how to get commission and Cat in the excel file.
 
+vim: how to replace a line? e.g., I need to replace all "," in the following line into blanks:
+: payer_id, fsid, payer_name, category_id, ticket_revenue_percentage, revenue_percentage, revenue, gross_sales, ticket_qty, order_qty
+in vim, it is done by:  :.s/,/ /g
 
 
 20120708
