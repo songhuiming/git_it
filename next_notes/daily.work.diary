@@ -238,49 +238,75 @@ vim: how to replace a line? e.g., I need to replace all "," in the following lin
 in vim, it is done by:  :.s/,/ /g
 
 
-20120708
+
+20120711
+jobs
+1: check the regression using PCA first then Regression: if all x are continuous, then PCA-REG generates the same result with REG.
+2: study the data of fansnap. 
+3: download attr data for SEO keywords
+
+Missing data in SAS:  http://www.ats.ucla.edu/stat/sas/modules/missing.htm
+
+proc means
+For each variable, the number of non-missing values are used
+
+proc freq
+By default, missing values are excluded and percentages are based on the number of non-missing values. If you use the missing option on the tables statement, the percentages are based on the total number of observations (non-missing and missing) and the percentage of missing values are reported in the table.
+
+proc corr
+By default, correlations are computed based on the number of pairs with non-missing data (pairwise deletion of missing data). The nomiss option can be used on the proc corr statement to request that correlations be computed only for observations that have non-missing data for all variables on the var statement (listwise deletion of missing data).
+
+proc reg
+If any of the variables on the model or var statement are missing, they are excluded from the analysis (i.e., listwise deletion of missing data)
+
+proc factor
+Missing values are deleted listwise, i.e., observations with missing values on any of the variables in the analysis are omitted from the analysis.
+
+proc glm
+The handling of missing values in proc glm can be complex to explain. If you have an analysis with just one variable on the left side of the model statement (just one outcome or dependent variable), observations are eliminated if any of the variables on the model statement are missing. Likewise, if you are performing a repeated measures ANOVA or a MANOVA, then observations are eliminated if any of the variables in the model statement are missing. For other situations, see the SAS/STAT manual about proc glm.
+For other procedures, see the SAS manual for information on how missing data are handled.
+
+Bias-Variance Trade-Off: http://www.willamette.edu/~gorr/classes/cs449/overfitting.html
+
+
+20120712
 jobs
 
 
 
-20120708
+20120713
 jobs
 
 
 
-20120708
+20120714
 jobs
 
 
 
-20120708
+20120715
 jobs
 
 
 
-20120708
-jobs
-
-
-
-20120708
+20120716
 jobs
 
 
 
 
-20120708
+20120717
 jobs
 
 
 
 
-20120708
+20120718
 jobs
 
 
 
-20120708
+20120719
 jobs
 
 
