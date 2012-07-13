@@ -271,6 +271,13 @@ Bias-Variance Trade-Off: http://www.willamette.edu/~gorr/classes/cs449/overfitti
 
 20120712
 jobs
+1: study on revenue_details, click_details and cpa_items 
+2: study on SAS index, see blog: http://www.songhuiming.com/2012/07/sas-study-notes-index-in-sas-when-to.html
+3: google voice: Settings->Forwards calls to -> (select the phone number) Edit -> Show advanced settings -> Voicemail Access: Choose ** YES ** -> if want, set up Ring Schedule -> Then call you own gv number to place a call
+
+visitnew, rep_click2 tables has ad_node_id: visitnew there is keyword, then there is corresponding ad_node_id for that keyword; in rep_click2 table there is product_id, so there is ad_node_id for that product. 
+
+best_leafnode_id is only for keywords, not for products.
 
 
 
@@ -281,6 +288,9 @@ jobs
 
 20120714
 jobs
+******######  most of the time this week is used to learn the data about FS. There are many tables and at the begining we dont know which tables to use. And there are many duplicate items in different tables: like gross_sales in revenue_details and cpa_items, like the relation between cost and commission, and so on. we spend a lot of time to study these tables.
+
+It's better to write down how to explore a new data we are not familar with
 
 
 
