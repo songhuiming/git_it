@@ -283,6 +283,8 @@ best_leafnode_id is only for keywords, not for products.
 
 20120713
 jobs
+1: continue check data of fansnap. revenue_details table and click_details table
+2: sas(proc freq) vs R(table, split)
 
 
 
@@ -301,7 +303,12 @@ jobs
 
 20120716
 jobs
+1: meeting with Sar to make clear with the data
+2: begin to prepare data, one question is about 30% of events has only one clicks
 
+*** linux commands and unix script  ***;
+linux commands:  http://www.pixelbeat.org/cmdline_zh_CN.html
+unix script:  http://www.calpoly.edu/~rasplund/script.html
 
 
 
