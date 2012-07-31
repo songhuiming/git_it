@@ -1,0 +1,21 @@
+###  linux: how Shell locates the file  ###
+to run the scr in your own dir, like /home/hsong/first.scr, need to run it at /home/hsong/   like /bin/sh /home/hsong/first.scr
+to overcome this inputing path, you need to create your own bin like:
+$cd                     (go to the home dir)
+$mkdir bin              (create bin dir, install your own shell script so that script can be run as independent program)
+$cp first ~/bin         (copy your script first to the bin dir)
+$first                  (run it)
+
+
+
+###  vi: how to search in vi with case insensitive  ###
+in vi, run this   :set ignorecase(or :set ic)  , that's it
+turn it on so no need to bother typing the :set each time, using  echo set ignorecase >>.exrc in your home directory, the .exrc is read each time when you start vi.
+More .exrc is a startup file (or configuration) file for the vi editor 
+
+
+
+###  
+
+
+
