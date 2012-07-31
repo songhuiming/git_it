@@ -1,0 +1,70 @@
+### study of linux book here http://www.freeos.com/guides/lsst/index.html  
+
+
+
+$ vi variscript
+#
+# Script to test MY knowledge about variables!
+#
+
+myname=Vivek
+myos=TroubleOS
+myno=5
+echo "My name is $myname"
+echo "My os is $myos"
+echo "My number is $myno, can you see this number"
+
+exit
+
+
+
+x=20
+y=5
+z=`expr x / y`
+echo $z 
+
+exit
+
+x=20
+y=5
+z=`expr x / y`
+echo $z
+
+exit
+
+
+x=6
+y=3
+
+expr y / x
+
+exit
+
+
+expr 6 + 3
+
+exit
+
+n=10
+xn=Rani
+echo $n $xn 
+
+exit
+
+
+
+myvar=This is Huiming Song
+
+echo $myvar
+
+exit 0
+
+#################################################
+
+clear 
+echo "Hello $USER";
+echo "Today is \c "; date
+echo "Number of user login : \c" ; who | wc -l
+echo "Calendar"
+cal 
+exit 0
