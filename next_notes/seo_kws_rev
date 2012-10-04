@@ -1,0 +1,14 @@
+prepare the SEO deletion kws. Detaild steps should be:
+1)	Make sure rev.clk.prep.sas runs fine every Monday
+2)	Run seo.kws.attr.sas to get training data, validation data and score data
+3)	Put the data into EM to build the model and score.
+4)	Prepare code to check revenue for the deletion model selected kws
+5)	Check revenue for the deleted kws
+
+3: cp the Eminer code only for deletion model (seo_kw_rev_delete_embatch.sas) to sas3, and included in deletion.modelonly.sas to build the model and score the score data.
+
+4: cp bucket.compare.log.sas from sas5 to sas3 and mofify it, include it in deletion.modelonly.sas to check the model result.
+
+5: prepare last 13 months revenue for SEO kws in check.13.rev.sas 
+
+
