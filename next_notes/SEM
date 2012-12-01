@@ -1,0 +1,31 @@
+SEM 4 necessary things:
+1: keyword
+2: bid
+3: copy
+4: url
+
+
+quality adjust:
+we are 7, if our quality is high, we bid 5
+next 8th one, quality is poor, they bid 16,
+
+broad, exact, phrase, mobile
+
+bid = rpv * rpv_adj * (1- mar_adj)
+                             70%   expr to determine this number, should be around 30~40%
+
+rpv 
+1)publisher rpv , for each different publishers, collect all hist data, publisher keywords level 
+2)index rpv, borrow info from other publishers, (indexed week)
+3)token rpv,  not enough data for given keyword, project based on kws attributes , majority of kws are here, landing page rpv, 
+
+
+
+
+
+
+
+
+
+
+
