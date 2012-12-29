@@ -47,6 +47,8 @@ ls -lR /data | grep hsong | awk '{ print $5" "$9 }' | sort -n | tail -10 | sort 
 find /home/hsong/ /home/temp_usr/ -maxdepth 1 -name "*sas_ucr*" -user "$1" -print -exec /bin/rm -Rf {} \;
 # find dir /home/hsong and its subdir files like .txt and cp them to dir_txt/
 find /home/hsong -name '*.txt' | xargs cp -a --target-directory=dir_txt/ --parents
+# search file and rsync to another serser sas_server2, same dir
+find /data/sasdata/format/formats.sas7bdat -exec rsync -avzu {} sas_server2:{} \;
 
 
 ###  5: use date expression
