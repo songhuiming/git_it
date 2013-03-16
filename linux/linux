@@ -86,7 +86,11 @@ elif [ "$1" = "intl" ]
 fi
 
 
-
+###  7: linux find large files  http://www.cyberciti.biz/faq/find-large-files-linux/
+# search in /var/log for files over 50MB in RedHat / CentOS / Fedora Linux
+find /var/log -type f -size +100000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
+# search in current file for Debian / Ubuntu Linux
+find . -type f -size +100000k -exec ls -lh {} \; | awk '{ print $8 ": " $5 }'
 
 
 
