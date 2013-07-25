@@ -93,8 +93,16 @@ find /var/log -type f -size +100000k -exec ls -lh {} \; | awk '{ print $9 ": " $
 find . -type f -size +100000k -exec ls -lh {} \; | awk '{ print $8 ": " $5 }'
 
 
+###  8: linux list all hsong files in /data02/temp/
+ls -d -lR /data02/temp/**/* | grep hsong
+# or to show more details
+ls -d -lR /data02/temp/**/**/**/**/**/** | grep hsong
+ls -lR /data02/temp/temp_sasprod/* | grep hsong > list
 
 
+###  9: all the file size of hsong
+du -sch /home/hsong/*
+ls -lR /data02/* | grep hsong | awk '{sum = sum + $5} END {print sum}'
 
 
 
