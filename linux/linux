@@ -105,6 +105,13 @@ du -sch /home/hsong/*
 ls -lR /data02/* | grep hsong | awk '{sum = sum + $5} END {print sum}'
 
 
+###  10: find all my files (with size >= limit) under a given dir
+for r in $(find /data01/ -type f -user hsong| grep "^\/data01"); do ls -la $r;done|cut -d " " -f 3,5,10
+for r in $(find /data02/temp/temp_sasprod/ -type f -user hsong| grep "^\/data02"); do ls -la $r;done|cut -d " " -f 3,5,10
+# list the files fits the condition
+for r in $(find /data02/temp/temp_sasprod/ -type f -size +500k -user hsong| grep "^\/data02"); do ls -lSR $r;done | less
+# rm the files fits the condition
+for r in $(find /data02/temp/temp_sasprod/ -type f -size +40000k -user hsong| grep "^\/data02"); do rm -rf $r;done 
 
 
 
