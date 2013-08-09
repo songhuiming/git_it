@@ -114,6 +114,9 @@ for r in $(find /data02/temp/temp_sasprod/ -type f -size +500k -user hsong| grep
 for r in $(find /data02/temp/temp_sasprod/ -type f -size +40000k -user hsong| grep "^\/data02"); do rm -rf $r;done 
 
 
+###  11: similar to 10 in another way
+find /data01/saswork/ /data02/temp/ -maxdepth 8 -size +30000k -name "*sas7bdat" -user "hsong" -print -exec  /bin/ls -ltr {} \;
+find /data01/saswork/ /data02/saswork/ -maxdepth 1 -name "*SAS_*" -user "$1" -print -exec /bin/rm -Rf {} \;
 
 
 
