@@ -119,7 +119,9 @@ find /data01/saswork/ /data02/temp/ -maxdepth 8 -size +30000k -name "*sas7bdat" 
 find /data01/saswork/ /data02/saswork/ -maxdepth 1 -name "*SAS_*" -user "$1" -print -exec /bin/rm -Rf {} \;
 
 
-
+###  12: suspend and resume a job by pid in linux
+kill -s SIGSTOP pid1 pid2 
+kill -s SIGCONT pid1 pid2
 
 
 
