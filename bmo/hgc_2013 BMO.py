@@ -37,11 +37,13 @@ dft[dft.duplicated(['uen'])]
 #3 de-dup the duplicated data
 df_dedup = dft.drop_duplicates(['uen'])      # dft.groupby('uen', group_keys=False).apply(lambda x: x.ix[x.def_date.idxmax()])
 df_dedup_2013 = df_dedup.ix[(df_dedup.def_date > pd.datetime(2012,11,1)) & (df_dedup.def_date < pd.datetime(2013,10,31))] 
+#################################################################################################################################################
+
 
 # bmo2013md.final_form_date <= pd.datetime(2013,1,31)  join with default after 2012, to get 22 defaults
 bmo2013_final = pd.merge(bmo2013, df_dedup_2013, on = 'uen', how = 'left').sort(['uen', 'final_form_date']).drop_duplicates('uen') 
 bmo2013_final['df_flag'] = np.where(bmo2013_final.def_date > 0, 1, 0)        	 # bmo2013_final.df_flag.value_counts() {0: 1510, 1: 22}
-
+bmo2013_final.df_flag.value_counts(dropna = False).sort_index()
  
  
  
