@@ -33,16 +33,31 @@ mi2013 = pd.concat([r2013q1_final, r2013rest_final], axis = 0, ignore_index = Tr
 mi2013_dedup = mi2013.sort(['EntityUEN', 'Final Form Date']).drop_duplicates('EntityUEN')		#2075
 
 #3  •	Check F2014 default list, to make sure that none of the borrowers that were flagged as non-defaults in this sample defaulted within one year of the Final Form date. 
-dft2014 = dft.ix[(dft.def_date <= pd.datetime(2014, 10, 31)) & (dft.def_date >= pd.datetime(2013, 11, 1)), :]
+#################################################### read in default data ######################################################################
+# read in default data and merge with quantitative data, one duplicated data was removed
+dft = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\defaults_after_Oct2012_wo_canada.xlsx", sheetname = 'df4py')
+dft.columns = [x.lower() for x in list(dft)]
 
-mi2013_dedup.EntityUEN.isin(dft2014.UEN).sum()       #33, meaning 33 from mi2013_dedup are in 2014 default list, remove them
-mi2013_final = mi2013_dedup.ix[~mi2013_dedup['EntityUEN'].isin(dft2014.UEN), :]             #2042 left
+#1 sort the default data by UEN + def_date in ascending order
+dft.sort(['uen', 'def_date'], ascending = [True, True])
+
+#2 check who are duplicates, the output will be  "36030947 2014-09-29"
+dft[dft.duplicated(['uen'])]
+
+#3 de-dup the duplicated data
+df_dedup = dft.drop_duplicates(['uen'])      # dft.groupby('uen', group_keys=False).apply(lambda x: x.ix[x.def_date.idxmax()])
+ 
+#################################################################################################################################################
+dft2014 = df_dedup.ix[(df_dedup.def_date <= pd.datetime(2014, 10, 31)) & (df_dedup.def_date >= pd.datetime(2013, 11, 1)), :]
+
+mi2013_dedup.EntityUEN.isin(dft2014.uen).sum()       #33, meaning 33 from mi2013_dedup are in 2014 default list, remove them
+mi2013_final = mi2013_dedup.ix[~mi2013_dedup['EntityUEN'].isin(dft2014.uen), :]             #2042 left
 
 # 4   Defaulters:
 # •	Start with the list of all borrowers that have defaulted between Nov. 1, 2012 and Oct. 31, 2013. This is the total defaulted population
 # •	Take the earliest available rating in F2013 data; that will be the pre-default rating associated with defaulted borrower in F2013
 dft2013 = dft.ix[(dft.def_date <= pd.datetime(2013, 10, 31)) & (dft.def_date >= pd.datetime(2012, 11, 1)), :]     
-mi2013_final.ix[:, 'df_flag'] = np.where(mi2013_good.EntityUEN.isin(dft2013.UEN), 1, 0)
+mi2013_final.ix[:, 'df_flag'] = np.where(mi2013_final.EntityUEN.isin(dft2013.uen), 1, 0)
 
 
 ######################################################################################################################################################
