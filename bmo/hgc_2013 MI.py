@@ -66,8 +66,40 @@ mi2013_final.df_flag.value_counts()           					# {0: 2018, 1: 24}
 mi2013_final.to_excel(writer, sheet_name = "M&I 2013 Final")
 writer.save()
 
- 
- 
+# US SIC   to exclude some SIC
+mi2013_final['insudt'] = mi2013_final.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.indust)))
+mi2013_final['sector_group'] = mi2013_final.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.sector_group))) 
+
+# before exclued, industy sector
+mi2013_final.sector_group.value_counts() 
+# SRVC    451
+# MFG     406
+# NONP    343
+# WHLS    279
+# CONS    184
+# REAL    105
+# RETL     99
+# TRAN     81
+# AGRI     37
+# FIN      37
+# GOVN      8
+# MINE      8
+# FOST      4
+
+#after exclude, industy sector counts
+mi2013_after_sic = mi2013_final.query('sector_group not in ["NONP", "AGRI", "AGSM", "OTHR", "FOST"]')      # {1: 15, 0: 1643}
+
+mi2013_after_sic.sector_group.value_counts() 
+# SRVC    451
+# MFG     406
+# WHLS    279
+# CONS    184
+# REAL    105
+# RETL     99
+# TRAN     81
+# FIN      37
+# GOVN      8
+# MINE      8
  
  
  

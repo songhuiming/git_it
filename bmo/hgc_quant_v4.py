@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import bisect
 
 v4vars = ['cashSecToCurrentLiab_adj', 'debtservicecoverage_adj', 'debttoebitda_adj', 'debttotangibleNW_adj', 'yearsinbusiness_adj', 'totalsales']
+[u'entityuen',  u'financial_statement_date', u'final_form_date', u'us_sic', ]
+#{'entityuen': 'uen', 'financial_statement_date': 'fin_stmt_dt', }
 
 # read in quantitative data
 hgc = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\quant.xlsx", sheetname = u'quant')
@@ -115,13 +117,16 @@ data_for_2014_sort = data_for_2014.sort(['mkey', 'df_flag', 'pw', 'dura_fybegin_
 data_2014_after_pw = data_for_2014_sort.ix[((data_for_2014_sort['pw'] != 0) & (data_for_2014_sort['pw'] != 9)), :].drop_duplicates(['mkey'])     # df = {1: 49, 0: 4744} 
 
 # check how many of them are M&I
-data_2014_after_pw['mi_ind'] = np.where(data_2014_after_pw.entityuen.isin(midf.uen), 1, 0)        #{1: 2775, 0: 2018}
+data_2014_after_pw['mi_flag'] = np.where(data_2014_after_pw.entityuen.isin(midf.uen), 1, 0)        #{1: 2775, 0: 2018}
 
-print data_2014_after_pw.mi_ind.value_counts(dropna = False).to_string()
+print data_2014_after_pw.mi_flag.value_counts(dropna = False).to_string()
 print data_2014_after_pw.df_flag.value_counts(dropna = False).to_string()
 
+# US SIC
+data_2014_after_pw['insudt'] = data_2014_after_pw.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.indust)))
+data_2014_after_pw['sector_group'] = data_2014_after_pw.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.sector_group))) 
 
-
+data2014_pw_sic = data_2014_after_pw.query('sector_group not in ["NONP", "AGRI", "AGSM", "OTHR", "FOST"]')      # {0: 1169, 1: 14}
 
 
 

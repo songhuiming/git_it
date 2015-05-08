@@ -6,10 +6,11 @@ import matplotlib.pyplot as plt
  
  
 #read in the 2013 year start data  ['uen', 'naics', 'sic', 'ussic', 'dft_date', 'default_flag']  #7635
-# bmo2013 = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2013\\F2013_PD_Validation_Corp_Bank_Sov_USComm_V15.xlsx", sheetname = "sheet1")
-# varbmo2013 = [x.replace(' ', '_').lower() for x in list(bmo2013)]
-# bmo2013.columns = varbmo2013
-# bmo2013_1 = bmo2013.ix[:, ['uen', 'naics', 'sic', 'ussic', 'dft_date', 'default_flag']]
+bmo2013 = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2013\\F2013_PD_Validation_Corp_Bank_Sov_USComm_V15.xlsx", sheetname = "Sheet1")
+varbmo2013 = [x.replace(' ', '_').lower() for x in list(bmo2013)]
+bmo2013.columns = varbmo2013
+bmo2013_1 = bmo2013.ix[:, ['uen', 'naics', 'sic', 'ussic', 'dft_date', 'default_flag']]
+bmo2013_0 = bmo2013.query('level58_desc != "P&C Canada" & pd_master_scale == "Commercial" & model == "General Commercial"') 
 
 
 # read in 2013 model drivers / rating data
@@ -45,7 +46,23 @@ bmo2013_final = pd.merge(bmo2013, df_dedup_2013, on = 'uen', how = 'left').sort(
 bmo2013_final['df_flag'] = np.where(bmo2013_final.def_date > 0, 1, 0)        	 # bmo2013_final.df_flag.value_counts() {0: 1510, 1: 22}
 bmo2013_final.df_flag.value_counts(dropna = False).sort_index()
  
+#US_SICCode
+bmo2013_final['insudt'] = bmo2013_final.us_siccode.replace(dict(zip(sic_indust.sic_code, sic_indust.indust)))
+bmo2013_final['sector_group'] = bmo2013_final.us_siccode.replace(dict(zip(sic_indust.sic_code, sic_indust.sector_group))) 
  
- 
+ # Exclude some industry factors
+bmo2013_after_sic = bmo2013_final.query('sector_group not in ["NONP", "AGRI", "AGSM", "OTHR", "FOST"]')      # {0: 1169, 1: 14}
+
+bmo2013_after_sic.sector_group.value_counts()
+# SRVC    341
+# MFG     270
+# WHLS    192
+# CONS    122
+# REAL     75
+# TRAN     69
+# RETL     69
+# FIN      27
+# GOVN     13
+# MINE      5
 
 
