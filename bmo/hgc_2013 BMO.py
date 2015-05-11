@@ -62,7 +62,7 @@ bmo2013_after_sic.sector_group.value_counts()
 # TRAN     69
 # RETL     69
 # FIN      27
-# GOVN     13
+# GOVT     13
 # MINE      5
 
 

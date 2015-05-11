@@ -52,26 +52,28 @@ df_dedup = dft.drop_duplicates(['uen'])      # dft.groupby('uen', group_keys=Fal
 df_dedup_2014 = df_dedup.ix[(df_dedup.def_date <= pd.datetime(2014, 10, 31)) & (df_dedup.def_date >= pd.datetime(2013, 11, 1)), :]
 
 mi2013_dedup.entityuen.isin(df_dedup_2014.uen).sum()       #33, meaning 33 from mi2013_dedup are in 2014 default list, remove them
-mi2013_final = mi2013_dedup.ix[~mi2013_dedup['entityuen'].isin(df_dedup_2014.uen), :]             #2042 left
+mi2013_wo_2014dft = mi2013_dedup.ix[~mi2013_dedup['entityuen'].isin(df_dedup_2014.uen), :]             #2042 left
 
 # 4   Defaulters:
 # •	Start with the list of all borrowers that have defaulted between Nov. 1, 2012 and Oct. 31, 2013. This is the total defaulted population
 # •	Take the earliest available rating in F2013 data; that will be the pre-default rating associated with defaulted borrower in F2013
 dft2013 = dft.ix[(dft.def_date <= pd.datetime(2013, 10, 31)) & (dft.def_date >= pd.datetime(2012, 11, 1)), :]     
-mi2013_final.ix[:, 'df_flag'] = np.where(mi2013_final.entityuen.isin(dft2013.uen), 1, 0)
+mi2013_wo_2014dft.ix[:, 'df_flag'] = np.where(mi2013_wo_2014dft.entityuen.isin(dft2013.uen), 1, 0)
 
+# read in sic_indust info
+sic_indust = pd.read_excel("H:\\work\\usgc\\2015\\quant\\SIC_Code_List.xlsx", sheetname = "sic_indust")
 
 ######################################################################################################################################################
-mi2013_final.df_flag.value_counts()           					# {0: 2018, 1: 24}
-mi2013_final.to_excel(writer, sheet_name = "M&I 2013 Final")
+mi2013_wo_2014dft.df_flag.value_counts()           					# {0: 2018, 1: 24}
+mi2013_wo_2014dft.to_excel(writer, sheet_name = "M&I 2013 Final")
 writer.save()
 
 # US SIC   to exclude some SIC
-mi2013_final['insudt'] = mi2013_final.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.indust)))
-mi2013_final['sector_group'] = mi2013_final.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.sector_group))) 
+mi2013_wo_2014dft['insudt'] = mi2013_wo_2014dft.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.indust)))
+mi2013_wo_2014dft['sector_group'] = mi2013_wo_2014dft.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.sector_group))) 
 
 # before exclued, industy sector
-mi2013_final.sector_group.value_counts() 
+mi2013_wo_2014dft.sector_group.value_counts() 
 # SRVC    451
 # MFG     406
 # NONP    343
@@ -82,12 +84,12 @@ mi2013_final.sector_group.value_counts()
 # TRAN     81
 # AGRI     37
 # FIN      37
-# GOVN      8
+# GOVT      8
 # MINE      8
 # FOST      4
 
 #after exclude, industy sector counts
-mi2013_after_sic = mi2013_final.query('sector_group not in ["NONP", "AGRI", "AGSM", "OTHR", "FOST"]')      # {1: 15, 0: 1643}
+mi2013_after_sic = mi2013_wo_2014dft.query('sector_group not in ["NONP", "AGRI", "AGSM", "OTHR", "FOST"]')      # {1: 15, 0: 1643}
 
 mi2013_after_sic.sector_group.value_counts() 
 # SRVC    451
@@ -98,8 +100,10 @@ mi2013_after_sic.sector_group.value_counts()
 # RETL     99
 # TRAN     81
 # FIN      37
-# GOVN      8
+# GOVT      8
 # MINE      8
+
+mi2013_after_sic = mi2013_after_sic.rename(columns = {'entity_uen': 'uen', 'df_flag': 'default_flag'})
  
  
  

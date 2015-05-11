@@ -47,6 +47,7 @@ bmo2013_all.sort(['uen', 'default_flag', 'final_form_date'], ascending = [True, 
 
 # finally we get 1774 obligors, compared with v15 data which gives 1619 after pw and sic
 bmo2013_final = bmo2013_all.drop_duplicates('uen')  																# {0: 1740, 1: 34}
+print bmo2013_final.default_flag.value_counts(dropna = False)
 
 
 

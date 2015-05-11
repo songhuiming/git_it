@@ -1,8 +1,11 @@
+# update: this method doesnt work because a lot of data will be filtered out.
+
 ## use the following way to prepare data
 # 1. Use population file as the basis  (V15)
 # 2. Get the SK to UEN mapping from Zack
 # 3. Get drivers from FACT driver file based on UEN matching (v2)
 # 4. Get drivers from HBC file based on SK to UEN map provided by Zack (HBC_20110101_20131031.xlsx)
+
 
 
 #!/usr/bin/python
