@@ -11,7 +11,9 @@ import matplotlib.pyplot as plt
  
 ######################################################   PART I: 2012 HBC data : 3 month data [2011Nov, 2012Jan]   ##########################################################
 #read in the 2012 HBC ratings
-bmo2012HBC = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2012\\2012_combined_data.xlsx", sheetname = "HBC_201111_201201")
+#bmo2012HBC = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2012\\2012_combined_data.xlsx", sheetname = "HBC_201111_201201")
+#bmo2012HBC.to_pickle(u"H:\\work\\usgc\\2015\\quant\\2012\\2012HBC")
+bmo2012HBC = pd.read_pickle(u"H:\\work\\usgc\\2015\\quant\\2012\\2012HBC")
 bmo2012HBC['source_from'] = 'HBC'
 varbmo2012HBC = [x.replace(' ', '_').lower() for x in list(bmo2012HBC)]
 bmo2012HBC.columns = varbmo2012HBC
@@ -20,7 +22,9 @@ bmo2012HBC_1 = bmo2012HBC_1.rename(columns = {'entity_nm': 'entity_name', 'eff_d
 
 
 #merge with population to get default flag
-hgcdf = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2012\\2012_combined_data.xlsx", sheetname = "populationWithDefault")
+#hgcdf = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2012\\2012_combined_data.xlsx", sheetname = "populationWithDefault")
+#hgcdf.to_pickle(u"H:\\work\\usgc\\2015\\quant\\2012\\hgcdf")
+hgcdf = pd.read_pickle(u"H:\\work\\usgc\\2015\\quant\\2012\\hgcdf")
 hgcdf.columns = [x.replace(' ', '_').lower() for x in list(hgcdf)]
 hgcdf[hgcdf.duplicated([u'bor_sk'])]  #duplicated of 21094192
 #de-dup population data for defaults
@@ -62,6 +66,8 @@ mravars = [u'sk_entity_id', u'as_of_dt', u'stmt_id', u'fin_stmt_dt', 'cur_ast_am
 
 #read in the 2012 year start data 
 hgc2012data = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2012\\2012_combined_data.xlsx", sheetname = "year_start")
+hgc2012data.to_pickle(u"H:\\work\\usgc\\2015\\quant\\2012\\hgc2012data")
+hgc2012data = pd.read_pickle(u"H:\\work\\usgc\\2015\\quant\\2012\\hgc2012data")
 hgc2012data.columns = [x.replace(' ', '_').lower() for x in list(hgc2012data)]
 hgc2012 = hgc2012data.ix[(hgc2012data['model'] == 'HGC') & (hgc2012data['eff_dt'] >= pd.datetime(2011,2,1,0,0,0)), hgc2012vars]
 hgc2012 = hgc2012.rename(columns = {'sic_code': 'us_sic', 'eff_dt': 'final_form_date'})
