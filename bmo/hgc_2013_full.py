@@ -66,12 +66,14 @@ bmo2013FACT_1 = bmo2013FACT.ix[(bmo2013FACT.rnd != 'Yes') & (bmo2013FACT.final_f
 bmo2013FACT_1 = bmo2013FACT_1.rename(columns = {'financialsstatdate': 'fin_stmt_dt', 'us_siccode': 'ussic'})     			# 1590					 
 
 # read in M&I data
-legacy_mi = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2013\\2013_combined_data.xlsx", sheetname = u'Legacy MI UEN')
+#legacy_mi = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2013\\2013_combined_data.xlsx", sheetname = u'legacy_mi_uen_new')
+#legacy_mi.to_pickle(u"H:\\work\\usgc\\2015\\quant\\2013\\mi_uen_new")
+legacy_mi = pd.read_pickle(u"H:\\work\\usgc\\2015\\quant\\2013\\mi_uen_new")
 legacy_mi.columns = [x.replace(' ', '_').lower() for x in list(legacy_mi)]
 
 # remove M&I obligors
 bmo2013FACT_1['mi_flag'] = bmo2013FACT_1.uen.isin(legacy_mi.uen) 
-bmo2013FACT_1 = bmo2013FACT_1.query('~mi_flag')                                # 789 left, 696 unique uen
+bmo2013FACT_1 = bmo2013FACT_1.query('~mi_flag')                                # 816 left, 721 unique uen
 
  
 #################################################### read in default data ######################################################################
@@ -113,7 +115,7 @@ bmo2013_FACT_after_sic_2.sort(['uen', 'default_flag', 'final_form_date'], ascend
 
 bmo2013_FACT_after_sic_pw = bmo2013_FACT_after_sic_2.drop_duplicates('uen')
 
-bmo2013_FACT_after_sic_pw.default_flag.value_counts()           
+print bmo2013_FACT_after_sic_pw.default_flag.value_counts()           # {0: 490, 1: 3}
 
 
 ######################################################   Finally, Combine data and remove duplicates by sk_entity_id   ##########################################################
@@ -124,5 +126,6 @@ bmo2013_full.sort(['uen', 'default_flag', 'final_form_date'], ascending = [True,
 
 # finally we get 1774 obligors, compared with v15 data which gives 1619 after pw and sic
 bmo2013_final = bmo2013_full.drop_duplicates('uen')  	
-bmo2013_final = bmo2013_final.rename(columns = {'ussic': 'us_sic'})															# {0: 1061, 1: 21}
+bmo2013_final = bmo2013_final.rename(columns = {'ussic': 'us_sic'})															# {0: 1082, 1: 22}
 print bmo2013_final.default_flag.value_counts(dropna = False)
+
