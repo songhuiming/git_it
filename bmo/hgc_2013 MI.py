@@ -8,11 +8,18 @@ import matplotlib.pyplot as plt
  
 writer = pd.ExcelWriter(u"H:\\work\\usgc\\2015\\quant\\2013\\MI_2013_Prepared_data.xlsx") 
 #read in the 2013 year start data 
-hgc = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\quant.xlsx", sheetname = u'quant')
+#hgc = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\quant.xlsx", sheetname = u'quant')
+#hgc.to_pickle(u"H:\\work\\usgc\\2015\\quant\\quant")
+hgc = pd.read_pickle(u"H:\\work\\usgc\\2015\\quant\\quant")
 hgc.columns = [x.replace(' ', '_').lower() for x in list(hgc)]
 
+# read in Legacy M&I and only keep the data in M&I uen pool
+legacy_mi = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2013\\2013_combined_data.xlsx", sheetname = u'legacy_mi_uen_new')
+legacy_mi.columns = [x.replace(' ', '_').lower() for x in list(legacy_mi)]
+hgc = hgc.ix[hgc.entityuen.isin(legacy_mi.uen), :]
+
 #1	For each borrower rated in Q1F2013 (between Nov. 1 2012 and Jan 31, 2013), take the rating that is closest to the beginning of F2013 (i.e. Nov. 1, 2012)    
-r2013q1 = hgc.ix[(hgc['final_form_date'] <= pd.datetime(2013,1,31)) & (hgc['final_form_date'] >= pd.datetime(2012,11,1)), :]        #1356    
+r2013q1 = hgc.ix[(hgc['final_form_date'] <= pd.datetime(2013,1,31,23,59,59)) & (hgc['final_form_date'] >= pd.datetime(2012,11,1)), :]        #1356    
 r2013q1_sort = r2013q1.sort(['entityuen', 'final_form_date'], ascending = [True, True])					#1356
 r2013q1_final = r2013q1_sort.drop_duplicates('entityuen')                                              	#1285
 
@@ -21,7 +28,7 @@ r2013q1_final = r2013q1_sort.drop_duplicates('entityuen')                       
 # o	If there are multiple ratings, take the earliest one (the one that is closest to the beginning of the FY
 # o	If there is only a single rating during this period, exclude from F2013 (as this rating would be used in construction of F2014 PW)
 
-r2013rest = hgc.ix[(hgc['final_form_date'] <= pd.datetime(2013,10,31)) & (hgc['final_form_date'] >= pd.datetime(2013,2,1)), :]				#5626
+r2013rest = hgc.ix[(hgc['final_form_date'] <= pd.datetime(2013,10,31,23,59,59)) & (hgc['final_form_date'] >= pd.datetime(2013,2,1)), :]				#5626
 
 # add duplicates indicator 
 dup_unique_uen = r2013rest.ix[r2013rest.duplicated('entityuen'), 'entityuen'].unique()  
@@ -57,7 +64,7 @@ mi2013_wo_2014dft = mi2013_dedup.ix[~mi2013_dedup['entityuen'].isin(df_dedup_201
 # 4   Defaulters:
 # •	Start with the list of all borrowers that have defaulted between Nov. 1, 2012 and Oct. 31, 2013. This is the total defaulted population
 # •	Take the earliest available rating in F2013 data; that will be the pre-default rating associated with defaulted borrower in F2013
-dft2013 = dft.ix[(dft.def_date <= pd.datetime(2013, 10, 31)) & (dft.def_date >= pd.datetime(2012, 11, 1)), :]     
+dft2013 = dft.ix[(dft.def_date <= pd.datetime(2013, 10, 31, 23, 59, 59)) & (dft.def_date >= pd.datetime(2012, 11, 1)), :]     
 mi2013_wo_2014dft.ix[:, 'df_flag'] = np.where(mi2013_wo_2014dft.entityuen.isin(dft2013.uen), 1, 0)
 
 # read in sic_indust info
@@ -103,11 +110,10 @@ mi2013_after_sic.sector_group.value_counts()
 # GOVT      8
 # MINE      8
 
-mi2013_after_sic = mi2013_after_sic.rename(columns = {'entity_uen': 'uen', 'df_flag': 'default_flag'})
+mi2013_after_sic = mi2013_after_sic.rename(columns = {'entityuen': 'uen', 'df_flag': 'default_flag'})      #  not only M&I uen {1: 15, 0: 1643},   only M&I uen {1: 14, 0: 1034}
+ 
+print mi2013_after_sic.default_flag.value_counts(dropna = False)
  
  
  
- 
- 
-
  
