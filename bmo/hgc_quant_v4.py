@@ -23,10 +23,6 @@ hgc.ix[(hgc.fy == 2013) & (hgc.modelversion.isin([4, 4.1])), v4vars].count()
 hgc.ix[(hgc.fy == 2013) & (hgc.modelversion.isin([3, 3.1])), v4vars].count()
 
 
-# read in M&I data
-midf = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2014\\Map_Legacy_MI.xlsx", sheetname = u'Map_Legacy_MI')
-midf.columns = [x.replace(' ', '_').lower() for x in list(midf)]
-
 # read in ratablenodata to filter data
 #hgcRND = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\quant.xlsx", sheetname = u'RND')
 #hgc = pd.merge(hgc, hgcRND, left_on = 'intArchiveID', right_on = 'ArchiveID', how = "left")
@@ -116,48 +112,22 @@ data_for_2014['mkey'] = data_for_2014.ix[:, u'entityuen'].map(str) + data_for_20
 data_for_2014_sort = data_for_2014.sort(['mkey', 'df_flag', 'pw', 'dura_fybegin_attst_abs'], ascending = [True, False, True, True])
 data_2014_after_pw = data_for_2014_sort.ix[((data_for_2014_sort['pw'] != 0) & (data_for_2014_sort['pw'] != 9)), :].drop_duplicates(['mkey'])     # df = {1: 49, 0: 4744} 
 
-# check how many of them are M&I
-data_2014_after_pw['mi_flag'] = np.where(data_2014_after_pw.entityuen.isin(midf.uen), 1, 0)        #{1: 2775, 0: 2018}
+# read in M&I data, check how many of them are M&I
+legacy_mi = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2013\\2013_combined_data.xlsx", sheetname = u'legacy_mi_uen_new')
+data_2014_after_pw['mi_flag'] = np.where(data_2014_after_pw.entityuen.isin(legacy_mi.uen), 1, 0)        #{1: 2775, 0: 2018}
 
 print data_2014_after_pw.mi_flag.value_counts(dropna = False).to_string()
 print data_2014_after_pw.df_flag.value_counts(dropna = False).to_string()
 
 # US SIC
+sic_indust = pd.read_excel("H:\\work\\usgc\\2015\\quant\\SIC_Code_List.xlsx", sheetname = "sic_indust") 
 data_2014_after_pw['insudt'] = data_2014_after_pw.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.indust)))
 data_2014_after_pw['sector_group'] = data_2014_after_pw.us_sic.replace(dict(zip(sic_indust.sic_code, sic_indust.sector_group))) 
 
 data2014_pw_sic = data_2014_after_pw.query('sector_group not in ["NONP", "AGRI", "AGSM", "OTHR", "FOST"]')      # {0: 1169, 1: 14}
 
-
-
-
-#############  stop here  #################
-
-
-
-
-
-##########################################################    Analysis after PW Dedup    #################################################################
-# data_2014_after_pw.query('fy == 2014').df_flag.value_counts(dropna = False)  	 
-# data_2014_after_pw.query('fy == 2013').df_flag.value_counts(dropna = False)  	 
-
-# check missing counts after PW
-# data_2014_after_pw.ix[data_2014_after_pw.fy == 2014, v4vars].count()
-# data_2014_after_pw.ix[data_2014_after_pw.fy == 2013, v4vars].count()
-# data_2014_after_pw.ix[(data_2014_after_pw.fy == 2014) & (data_2014_after_pw.modelversion.isin([4, 4.1])), v4vars].count()
-# data_2014_after_pw.ix[(data_2014_after_pw.fy == 2014) & (data_2014_after_pw.modelversion.isin([3, 3.1])), v4vars].count()
-# data_2014_after_pw.ix[(data_2014_after_pw.fy == 2013) & (data_2014_after_pw.modelversion.isin([4, 4.1])), v4vars].count()
-# data_2014_after_pw.ix[(data_2014_after_pw.fy == 2013) & (data_2014_after_pw.modelversion.isin([3, 3.1])), v4vars].count()
-
-
-
-
-
-
-
-
-
-
+print pd.crosstab(data2014_pw_sic.mi_flag, data2014_pw_sic.df_flag)
+ 
 
 
 
