@@ -72,6 +72,7 @@ hgc2012_after_sic.ix[hgc2012_after_sic.cur_ast_amt.isnull(), :].default_flag.val
 ## so, the final data should be picked in this way
 hgc2012_after_sic_wo_allmissing = hgc2012_after_sic.ix[hgc2012_after_sic.cur_ast_amt.notnull(), :]
 hgc2012_after_sic_wo_allmissing.count() 
+hgc2012_after_sic_wo_allmissing = hgc2012_after_sic_wo_allmissing.rename(columns = {'input_bsd': 'bsd', 'net_sales_amt': 'tot_sales_amt', 'input_dtnw': 'debt_to_nw_rto'})
 
 
 
