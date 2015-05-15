@@ -65,5 +65,10 @@ bmo2013_FACT_after_sic_2.sort(['uen', 'default_flag', 'final_form_date'], ascend
 bmo2013_FACT_after_sic_pw = bmo2013_FACT_after_sic_2.drop_duplicates('uen')
 
 bmo2013_FACT_after_sic_pw.default_flag.value_counts()                                           # {0: 470,  1: 1} 
- 
+f2013_fact_rename1 = {"cv_debtservicecoverage_adj": "dsc", "cv_currentratio_adj": "cur_rto", "cv_debttotangiblenw_adj": "debt_to_tnw_rto", "cv_yearsinbusiness_adj": "yib_missing", "total_sales": "tot_sales", "cv_debt_ebitda_adj": "debt_to_ebitda_rto"}
+f2013_fact_rename2 = {'businessstartdate': 'bsd', 'ussic': 'us_sic', 'currentassets': 'cur_ast_amt', 'tot_sales': 'tot_sales_amt', 'currentliabilities': 'cur_liab_amt', 'debt': 'tot_debt_amt', 'tangiblenetworth': 'tangible_net_worth_amt', 'ebitda': 'ebitda_amt', 'debtservicetotalamount': 'ds_amt', 'debt_to_tnw': 'debt_to_tnw_rto', 'debt_to_ebitda': 'debt_to_ebitda_rto'}
+bmo2013_FACT_after_sic_pw['yrs_in_bus'] = (bmo2013_FACT_after_sic_pw['final_form_date'] - bmo2013_FACT_after_sic_pw['businessstartdate']) / np.timedelta64(1, 'Y') 
+bmo2013_FACT_after_sic_pw = bmo2013_FACT_after_sic_pw.rename(columns = f2013_fact_rename1)
+bmo2013_FACT_after_sic_pw = bmo2013_FACT_after_sic_pw.rename(columns = f2013_fact_rename2)
+
 
