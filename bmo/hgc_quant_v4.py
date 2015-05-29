@@ -6,6 +6,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import bisect
 
+pdIntval = [0.0003, 0.0007, 0.0011, 0.0019, 0.0032, 0.0054, 0.0091, 0.0154, 0.0274, 0.0516, 0.097, 0.1823, 1]
+msRating = ['I-2', 'I-3', 'I-4', 'I-5', 'I-6', 'I-7', 'S-1', 'S-2', 'S-3', 'S-4', 'P-1', 'P-2', 'P-3', 'D-1']
+pcRR = [10, 15, 20, 25, 30, 35, 40, 45, 46, 47, 50, 51, 52]
+ranking = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+newMapPD = [0.0003, 0.0005, 0.0009, 0.0015, 0.0026, 0.0043, 0.0073, 0.0123, 0.0214, 0.0395, 0.0743, 0.1397, 0.2412]
+oldMapPD = [0.0004, 0.0007, 0.0013, 0.0025, 0.004, 0.0067, 0.0107, 0.018, 0.0293, 0.0467, 0.0933, 0.18, 0.3333] 
+
 v4vars = ['cash', 'timedeposits', 'othermarketablesecurities', 'currentratio_adj', 'cashsectocurrentliab_adj', 'debtservicecoverage_adj', 'debttoebitda_adj', 'debttotangiblenw_adj', 'yearsinbusiness_adj', 'totalsales']
 v4vars2 = ['currentassets', 'totalassets', 'currentliabilities', 'totalnoncurrentliabilities', 'debt', 'tangiblenetworth', 'totalsales', 'netprofit', 'ebitda', 'debtservicetotalamount']
 v4vars3 = [u'entityuen',  u'financial_statement_date', u'final_form_date', u'us_sic', ]
@@ -19,6 +26,9 @@ hgc.columns = [x.replace(' ', '_').lower() for x in list(hgc)]
 hgc_rename = {'currentassets': 'cur_ast_amt', 'totalassets': 'tot_ast_amt', 'currentliabilities': 'cur_liab_amt', 'debt': 'tot_debt_amt', 'tangiblenetworth': 'tangible_net_worth_amt', 'totalsales': 'tot_sales_amt', 'ebitda': 'ebitda_amt', 'years_in_business_c': 'yrs_in_bus', 'debtservicetotalamount': 'ds_amt'}
 hgc['tot_liab_amt'] = hgc.currentliabilities + hgc.totalnoncurrentliabilities
 hgc = hgc.rename(columns = hgc_rename)
+
+hgc['quant_ranking'] = hgc.quantitativerating.map(dict(zip(msRating, ranking)))
+hgc['final_ranking'] = hgc.final_rating.map(dict(zip(msRating, ranking)))
 
 #################################################### read in supplementary data ######################################################################
 F2014FACT_sup_cols = ['archive_statement_id', 'archiveid', 'netincome', 'totaloperatingincome', 'cv_debt_ebitda_adj', 'cv_debttotangiblenw_adj']
@@ -195,10 +205,10 @@ print pd.crosstab(data2014_pw_sic.mi_flag, data2014_pw_sic.default_flag)
 data2014_pw_sic['yeartype'] = np.where(data2014_pw_sic.mi_flag == 1, '2014MI', '2014HBC')
 data2014_pw_sic = data2014_pw_sic.rename(columns = {'def_date': 'default_date', 'entityuen': 'uen'})
 
-common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype']
+common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking']
 final_model_vars = ['cur_ast_amt', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'tot_debt_amt', 'net_worth_amt', 'tangible_net_worth_amt', 'tot_sales_amt', 'net_inc_amt', 'ebitda_amt', 'dsc', 'yrs_in_bus', 'debt_to_tnw_rto', 'debt_to_ebitda_rto', 'net_margin_rto', 'cur_rto']
 
-data2014_pw_sic.ix[:, common_vars + final_model_vars].head()
+data2014_pw_sic.ix[:, common_vars + final_model_vars].to_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\F2014ALL_4_model.xlsx") 
  
 
 
