@@ -1,10 +1,20 @@
 #!/usr/bin/python
 
-# As Miroslav email titlted "F2013 GC US sample for M&I" on Apr29 6:36PM
+#1: read in FACT data
+#2: read in the supplementary data by Zack, HGC_FACT_Financial_Variable_V2.xlsx
+#3: default data
+#4: Rules for M&I: As Miroslav email titlted "F2013 GC US sample for M&I" on Apr29 6:36PM
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+ 
+pdIntval = [0.0003, 0.0007, 0.0011, 0.0019, 0.0032, 0.0054, 0.0091, 0.0154, 0.0274, 0.0516, 0.097, 0.1823, 1]
+msRating = ['I-2', 'I-3', 'I-4', 'I-5', 'I-6', 'I-7', 'S-1', 'S-2', 'S-3', 'S-4', 'P-1', 'P-2', 'P-3', 'D-1']
+pcRR = [10, 15, 20, 25, 30, 35, 40, 45, 46, 47, 50, 51, 52]
+ranking = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+newMapPD = [0.0003, 0.0005, 0.0009, 0.0015, 0.0026, 0.0043, 0.0073, 0.0123, 0.0214, 0.0395, 0.0743, 0.1397, 0.2412]
+oldMapPD = [0.0004, 0.0007, 0.0013, 0.0025, 0.004, 0.0067, 0.0107, 0.018, 0.0293, 0.0467, 0.0933, 0.18, 0.3333] 
  
 writer = pd.ExcelWriter(u"H:\\work\\usgc\\2015\\quant\\2013\\MI_2013_Prepared_data.xlsx") 
 #read in the 2013 year start data 
@@ -12,6 +22,52 @@ writer = pd.ExcelWriter(u"H:\\work\\usgc\\2015\\quant\\2013\\MI_2013_Prepared_da
 #hgc.to_pickle(u"H:\\work\\usgc\\2015\\quant\\quant")
 hgc = pd.read_pickle(u"H:\\work\\usgc\\2015\\quant\\quant")
 hgc.columns = [x.replace(' ', '_').lower() for x in list(hgc)]
+
+hgc['quant_ranking'] = hgc.quantitativerating.map(dict(zip(msRating, ranking)))
+hgc['final_ranking'] = hgc.final_rating.map(dict(zip(msRating, ranking)))
+
+hgc_rename = {'currentassets': 'cur_ast_amt', 'totalassets': 'tot_ast_amt', 'currentliabilities': 'cur_liab_amt', 'debt': 'tot_debt_amt', 'tangiblenetworth': 'tangible_net_worth_amt', 'totalsales': 'tot_sales_amt', 'ebitda': 'ebitda_amt', 'years_in_business_c': 'yrs_in_bus', 'debtservicetotalamount': 'ds_amt'}
+hgc['tot_liab_amt'] = hgc.currentliabilities + hgc.totalnoncurrentliabilities
+hgc = hgc.rename(columns = hgc_rename)
+
+
+#################################################### read in supplementary data ######################################################################
+F2014FACT_sup_cols = ['archive_statement_id', 'archiveid', 'netincome', 'totaloperatingincome', 'cv_debt_ebitda_adj', 'cv_debttotangiblenw_adj']
+#f2014fact_sup_data = pd.read_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\HGC_FACT_Financial_Variable_V2.xlsx")
+#f2014fact_sup_data.columns = [x.replace(' ', '_').lower() for x in list(f2014fact_sup_data)]
+#f2014fact_sup_data.to_pickle("H:\\work\\usgc\\2015\\quant\\2015_supp\\f2014fact_sup_dat")
+f2014fact_sup_data = pd.read_pickle("H:\\work\\usgc\\2015\\quant\\2015_supp\\f2014fact_sup_dat")
+f2014fact_sup_data_1 = f2014fact_sup_data.ix[:, F2014FACT_sup_cols]
+F2014FACT_sup_cols_rename = {'archiveid': 'intarchiveid', 'netincome': 'net_inc_amt', 'totaloperatingincome': 'tot_optinc_amt', 'cv_debt_ebitda_adj': 'debt_to_ebitda_rto', 'cv_debttotangiblenw_adj': 'debt_to_tnw_rto'}
+f2014fact_sup_data_1 = f2014fact_sup_data_1.rename(columns = F2014FACT_sup_cols_rename)
+
+hgc = pd.merge(hgc, f2014fact_sup_data_1, on = 'intarchiveid', how = 'left')
+
+#####  hgc to merge in financial statements and calculate ratios 
+## table19_calc:  Non-Debt Based Ratios ( except Net Margin, EBITDA Margin, EBIT Margin)
+def table19_calc(x, y):
+	return np.where((x.isnull()) | (y.isnull()), np.nan, np.where((x == 0) & (y == 0), 0, np.where((x > 0) & (y == 0), 99999999, np.where((x < 0) & (y == 0), -99999999, np.where((x < 0) & (y < 0), -99999999, x / y )))))
+
+## table20_calc:   Debt Based Ratios
+def table20_calc(x, y):
+	return np.where((x.isnull()) | (y.isnull()), np.nan, np.where((x == 0) & (y == 0), 0, np.where((x > 0) & (y == 0), np.nan, np.where((x > 0) & (y < 0), 99999999, x / y))))
+	
+## table21_calc:    Net Margin, EBITDA Margin, EBIT Margin
+def table21_calc(x, y):
+	return np.where((x.isnull()) | (y.isnull()), np.nan, np.where((x == 0) & (y == 0), 0, np.where((x > 0) & (y == 0), np.nan, np.where((x < 0) & (y < 0), -99999999, x / y))))
+
+# years in business 	
+def yib_calc(x, y):
+	return (x - y) / np.timedelta64(1, 'Y')
+	
+# calculate some ratios
+hgc['dsc'] = table19_calc(hgc.tot_optinc_amt, hgc.ds_amt)
+hgc['cur_rto'] = table19_calc(hgc.cur_ast_amt, hgc.cur_liab_amt) 
+hgc['net_margin_rto'] = table19_calc(hgc.net_inc_amt, hgc.tot_sales_amt)
+
+
+#################################################### end of read in supplementary data ######################################################################
+
 
 # read in Legacy M&I and only keep the data in M&I uen pool
 legacy_mi = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2013\\2013_combined_data.xlsx", sheetname = u'legacy_mi_uen_new')
@@ -115,5 +171,29 @@ mi2013_after_sic = mi2013_after_sic.rename(columns = {'entityuen': 'uen', 'df_fl
 print mi2013_after_sic.default_flag.value_counts(dropna = False)
  
  
+#### verify
+# mi2013_after_sic.ix[:, final_model_vars].count()
+# cur_ast_amt               990
+# tot_ast_amt               990
+# cur_liab_amt              990
+# tot_liab_amt              894
+# tot_debt_amt              990
+# net_worth_amt               0
+# tangible_net_worth_amt    990
+# tot_sales_amt             989
+# net_inc_amt               990
+# ebitda_amt                990
+# dsc                       972
+# yrs_in_bus                984
+# debt_to_tnw_rto           983
+# debt_to_ebitda_rto        983
+# net_margin_rto            989
+# cur_rto                   990
  
+
+### final columns needed
+common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking']
+final_model_vars = ['cur_ast_amt', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'tot_debt_amt', 'net_worth_amt', 'tangible_net_worth_amt', 'tot_sales_amt', 'net_inc_amt', 'ebitda_amt', 'dsc', 'yrs_in_bus', 'debt_to_tnw_rto', 'debt_to_ebitda_rto', 'net_margin_rto', 'cur_rto']
+mi2013_after_sic.ix[:, common_vars + final_model_vars].to_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\F2013MI_4_model.xlsx")
+
  
