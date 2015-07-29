@@ -11,3 +11,4 @@ then   git remote add origin git@github.com:songhuiming/git_test.git   to create
 then   at last we can push into origin repo
 
 
+
