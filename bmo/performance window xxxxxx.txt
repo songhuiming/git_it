@@ -1,0 +1,19 @@
+FY 2014
+
+1: Good
+Nov 2013/11/1 , 9 month before,  or 3 month after
+
+
+2: DF   2014
+DFDT  :    172
+FFD  [3~12 before,   12~18 before, ]
+
+
+3: 2013: 2012 ratings
+ask Zack for 2012 Validation data file
+
+
+M&I:  id for new/old borrows  (existing bmo borrowers)
+
+    
+

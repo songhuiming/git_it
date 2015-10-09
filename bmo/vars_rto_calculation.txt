@@ -1,0 +1,93 @@
+2012   HBC
+
+DSC
+cannot calculate it, but will replace it by CUR_RTO
+
+DEBT_TO_EBITDA_RTO * EBITDA_AMT / TANGIBLE_NET_WORTH_AMT
+(EFF_DT - INPUT_BSD) / 365
+NET_SALES_AMT
+DEBT_TO_EBITDA_RTO
+
+cur_rto
+net_margin_rto
+
+hgc2012vars = [u'sk_entity_id', u'eff_dt', u'sic_code', u'fin_stmt_dt', 'cur_rto', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'debt_to_ebitda_rto', 'input_dtnw', 'tangible_net_worth_amt', 'net_sales_amt', 'net_inc_amt', 'ebitda_amt', 'dsc', 'input_bsd', 'input_ebit']
+
+mravars = [u'sk_entity_id', u'as_of_dt', u'stmt_id', u'fin_stmt_dt', 'cur_ast_amt', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'tot_debt_amt', 'net_worth_amt', 'tangible_net_worth_amt', 'tot_sales_amt', 'net_inc_amt', 'ebitda_amt', 'tot_debt_srvc_amt', 'eff_date', 'ebit_amt', 'cash_and_secu_amt']
+
+
+##########################################################################################################################################
+2013FACT
+
+"cv_debtservicecoverage_Adj": "dsc",
+"cv_currentratio_adj": "cur_rto",
+"cv_debttotangiblenw_adj": "debt_to_tnw",
+"cv_yearsinbusiness_adj": "yrs_in_bus",
+"total_sales": "tot_sales",
+"cv_debt_ebitda_adj": "bedt_to_ebitda"
+
+'businessstartdate': 'bsd', 'ussic': 'us_sic', 'currentassets': 'cur_ast_amt', 'tot_sales': 'tot_sales_amt', 'currentliabilities': 'cur_liab_amt', 'debt': 'tot_debt_amt', 'tangiblenetworth': 'tangible_net_worth_amt', 'ebitda': 'ebitda_amt', 'debtservicetotalamount': 'ds_amt', 'debt_to_tnw': 'debt_to_tnw_rto', 'debt_to_ebitda': 'debt_to_ebitda_rto', 
+
+
+##########################################################################################################################################
+2014 FACT
+
+financial statements
+
+'currentassets': 'cur_ast_amt', 
+'totalassets': 'tot_ast_amt', 
+'currentliabilities': 'cur_liab_amt', 
+'totalnoncurrentliabilities': 'tot_non_cur_liab_amt', 
+'debt': 'tot_debt_amt', 
+'tangiblenetworth': 'tangible_net_worth_amt', 
+'totalsales': 'tot_sales_amt', 
+'netprofit': 'net_profit_amt', 
+'ebitda': 'ebitda_amt', 
+'debtservicetotalamount': 'ds_amt'
+
+ratios
+
+'currentratio_adj': "cur_rto", 
+'cashsectocurrentliab_adj': "cs_to_cur_liab_rto", 
+'debtservicecoverage_adj': "dsc", 
+'debttoebitda_adj': "bedt_to_ebitda", 
+'debttotangiblenw_adj': "debt_to_tnw", 
+'yearsinbusiness_adj': "yrs_in_bus"
+
+#################################### Calculate based on Table 19, 20, 21   #######################################
+## table19_calc:  Non-Debt Based Ratios ( except Net Margin, EBITDA Margin, EBIT Margin)
+def table19_calc(x, y):
+	return np.where((x.isnull()) | (y.isnull()), np.nan, np.where((x == 0) & (y == 0), 0, np.where((x > 0) & (y == 0), 99999999, np.where((x < 0) & (y == 0), -99999999, np.where((x < 0) & (y < 0), -99999999, x / y )))))
+
+## table20_calc:   Debt Based Ratios
+def table20_calc(x, y):
+	return np.where((x.isnull()) | (y.isnull()), np.nan, np.where((x == 0) & (y == 0), 0, np.where((x > 0) & (y == 0), np.nan, np.where((x > 0) & (y < 0), 99999999, x / y))))
+	
+## table21_calc:    Net Margin, EBITDA Margin, EBIT Margin
+def table21_calc(x, y):
+	return np.where((x.isnull()) | (y.isnull()), np.nan, np.where((x == 0) & (y == 0), 0, np.where((x > 0) & (y == 0), np.nan, np.where((x < 0) & (y < 0), -99999999, x / y))))
+
+# years in business 	
+def yib_calc(x, y):
+	return (x - y) / np.timedelta64(1, 'Y')
+	
+# cur_rto = cur_ast_amt/cur_liab_amt:   							# table 19
+# debt_to_tnw_rto = tot_debt_amt / tangible_net_worth_amt			# table 19
+# yrs_in_bus  =  final_form_date - bsd								# direct calc
+# net_margin_rto =  net_inc_amt / tot_sales_amt						# table 19
+
+### final columns needed
+common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group']
+final_model_vars = ['cur_ast_amt', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'tot_debt_amt', 'net_worth_amt', 'tangible_net_worth_amt', 'tot_sales_amt', 'net_inc_amt', 'ebitda_amt', 'dsc', 'yrs_in_bus', 'debt_to_tnw_rto', 'debt_to_ebitda_rto', 'net_margin_rto', 'cur_rto']
+
+
+
+
+
+
+
+
+
+
+
+

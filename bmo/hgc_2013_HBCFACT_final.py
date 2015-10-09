@@ -107,11 +107,11 @@ def yib_calc(x, y):
 bmo2013_FACT_after_sic_pw['yrs_in_bus'] = yib_calc(bmo2013_FACT_after_sic_pw['final_form_date'], bmo2013_FACT_after_sic_pw['bsd'])
 bmo2013_FACT_after_sic_pw['cur_rto'] = table19_calc(bmo2013_FACT_after_sic_pw['cur_ast_amt'], bmo2013_FACT_after_sic_pw['cur_liab_amt'])  
 bmo2013_FACT_after_sic_pw['net_margin_rto'] = table19_calc(bmo2013_FACT_after_sic_pw['net_inc_amt'], bmo2013_FACT_after_sic_pw['tot_sales_amt'])     #need to pull net_inc_amt first
-bmo2013_FACT_after_sic_pw['yeartype'] = '2013HGC'
+bmo2013_FACT_after_sic_pw['yeartype'] = '2013FACT'
 
 	
 ##############################################################################   PART II: DATA from HBC  ##################################################################################
-# use HBC_20110101_20131031 for data preparation, the only way to get default if from the population data v15 excel file
+# use HBC_20110101_20131031 for data preparation, the only way to get default is from the population data v15 excel file
 # HBC: FACT no MI/UEN(after 2012Oct) + HBC2011_2013(before 2012Oct)
 # This file does not have M&I ratings
 
@@ -179,6 +179,8 @@ mrakeep = ['sk_entity_id', 'as_of_dt', 'cur_ast_amt', 'tot_ast_amt', 'cur_liab_a
 mra_1 = mra.ix[:, mrakeep]
 mra_1_vars = [x.replace(' ', '_').lower() for x in list(mra_1)]
 mra_1.columns = mra_1_vars
+by1000 = ['cur_ast_amt', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'tot_debt_amt', 'net_worth_amt', 'tangible_net_worth_amt', 'tot_sales_amt', 'net_inc_amt', 'ebitda_amt', 'tot_debt_srvc_amt', 'ebit_amt', 'cash_and_secu_amt']
+mra_1.ix[:, by1000] = mra_1.ix[:, by1000] * 1000 
 
 bmo2013HBC_2_after_sic_pw_mra = pd.merge(bmo2013HBC_2_after_sic_pw, mra_1, left_on = ['sk_entity_id'], right_on = ['sk_entity_id'], how = 'inner')
 bmo2013HBC_2_after_sic_pw_mra['dt_diff'] = abs((bmo2013HBC_2_after_sic_pw_mra.final_form_date - bmo2013HBC_2_after_sic_pw_mra.as_of_dt) / np.timedelta64(1, 'D'))
@@ -214,7 +216,7 @@ bmo2013HBC_2_after_sic_pw_mra_dudup['cur_rto'] = table19_calc(bmo2013HBC_2_after
 
 #net margin ratio = net income / total sales
 bmo2013HBC_2_after_sic_pw_mra_dudup['net_margin_rto'] = table19_calc(bmo2013HBC_2_after_sic_pw_mra_dudup.net_inc_amt, bmo2013HBC_2_after_sic_pw_mra_dudup.tot_sales_amt)
-bmo2013HBC_2_after_sic_pw_mra_dudup['yeartype'] = '2013HGC'
+bmo2013HBC_2_after_sic_pw_mra_dudup['yeartype'] = '2013HBC'
 # delete the obligor whose as_of_dt diffs more than 30 days
 bmo2013HBC_2_final = bmo2013HBC_2_after_sic_pw_mra_dudup.ix[bmo2013HBC_2_after_sic_pw_mra_dudup.mra_priority.isin([1, 2]), :]
 
@@ -222,7 +224,7 @@ print ".99 percentile is %s" %(np.percentile(bmo2013HBC_2_after_sic_pw_mra_dudup
 
 
 
-##############################################################################   Part II: Combine Part I and Part II  ####################################################################
+##############################################################################   Part III: Combine Part I and Part II  ####################################################################
 
 
 #after it is done, concat with bmo2013_FACT_after_sic_pw in hgc_2013_FACT.py for final dedup
@@ -236,7 +238,7 @@ print bmo2013_final.default_flag.value_counts(dropna = False)     		# {0: 1046, 
 #######  output
 
 ### final columns needed
-common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking']
+common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking', u'fin_stmt_dt']
 final_model_vars = ['cur_ast_amt', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'tot_debt_amt', 'net_worth_amt', 'tangible_net_worth_amt', 'tot_sales_amt', 'net_inc_amt', 'ebitda_amt', 'dsc', 'yrs_in_bus', 'debt_to_tnw_rto', 'debt_to_ebitda_rto', 'net_margin_rto', 'cur_rto']
 bmo2013_final.ix[:, common_vars + final_model_vars].to_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\F2013HGC_4_model.xlsx")
 

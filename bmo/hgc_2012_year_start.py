@@ -98,8 +98,10 @@ hgc2012_after_sic_wo_allmissing.count()
 hgc2012_after_sic_wo_allmissing = hgc2012_after_sic_wo_allmissing.rename(columns = {'input_bsd': 'bsd', 'net_sales_amt': 'tot_sales_amt', 'input_dtnw': 'debt_to_nw_rto'})
 hgc2012_after_sic_wo_allmissing['yeartype'] = '2012HBC'
 
+# total sales is un-reasonably small in F2012, we adjust it by 1000
+hgc2012_after_sic_wo_allmissing['tot_sales_amt'] = hgc2012_after_sic_wo_allmissing['tot_sales_amt'] * 1000
 
-common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking']
+common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking', u'fin_stmt_dt']
 final_model_vars = ['cur_ast_amt', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'tot_debt_amt', 'net_worth_amt', 'tangible_net_worth_amt', 'tot_sales_amt', 'net_inc_amt', 'ebitda_amt', 'dsc', 'yrs_in_bus', 'debt_to_tnw_rto', 'debt_to_ebitda_rto', 'net_margin_rto', 'cur_rto']
 hgc2012_after_sic_wo_allmissing.ix[:, common_vars + final_model_vars].to_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\F2012ALL_4_model.xlsx") 
 

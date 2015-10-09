@@ -26,10 +26,16 @@ hgc.columns = [x.replace(' ', '_').lower() for x in list(hgc)]
 hgc['quant_ranking'] = hgc.quantitativerating.map(dict(zip(msRating, ranking)))
 hgc['final_ranking'] = hgc.final_rating.map(dict(zip(msRating, ranking)))
 
-hgc_rename = {'currentassets': 'cur_ast_amt', 'totalassets': 'tot_ast_amt', 'currentliabilities': 'cur_liab_amt', 'debt': 'tot_debt_amt', 'tangiblenetworth': 'tangible_net_worth_amt', 'totalsales': 'tot_sales_amt', 'ebitda': 'ebitda_amt', 'years_in_business_c': 'yrs_in_bus', 'debtservicetotalamount': 'ds_amt'}
+hgc_rename = {'currentassets': 'cur_ast_amt', 'totalassets': 'tot_ast_amt', 'currentliabilities': 'cur_liab_amt', 'debt': 'tot_debt_amt', 'tangiblenetworth': 'tangible_net_worth_amt', 'totalsales': 'tot_sales_amt', 'ebitda': 'ebitda_amt', 'years_in_business_c': 'yrs_in_bus', 'debtservicetotalamount': 'ds_amt', u'financial_statement_date': 'fin_stmt_dt'}
 hgc['tot_liab_amt'] = hgc.currentliabilities + hgc.totalnoncurrentliabilities
 hgc = hgc.rename(columns = hgc_rename)
 
+# new: use (ebitda - substaxliabilitymemo)/debtserviceamount as dsc calculation 
+hgc_dsc_sup = pd.read_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\HGC FACT data (Jul 22 2015).xlsx", sheetname = "GC US data")
+hgc_dsc_sup.columns = [x.replace(' ', '_').lower() for x in list(hgc_dsc_sup)]
+hgc_dsc_sup = hgc_dsc_sup.ix[:, ["intarchiveid", "substaxliabilitymemo"]]
+hgc = pd.merge(hgc, hgc_dsc_sup, on = 'intarchiveid', how = 'left')
+hgc["ebitda_substax"] = np.where(hgc.substaxliabilitymemo.notnull(), hgc.ebitda_amt - hgc.substaxliabilitymemo, hgc.ebitda_amt)
 
 #################################################### read in supplementary data ######################################################################
 F2014FACT_sup_cols = ['archive_statement_id', 'archiveid', 'netincome', 'totaloperatingincome', 'cv_debt_ebitda_adj', 'cv_debttotangiblenw_adj']
@@ -61,7 +67,7 @@ def yib_calc(x, y):
 	return (x - y) / np.timedelta64(1, 'Y')
 	
 # calculate some ratios
-hgc['dsc'] = table19_calc(hgc.tot_optinc_amt, hgc.ds_amt)
+hgc['dsc'] = table19_calc(hgc.ebitda_substax, hgc.ds_amt)
 hgc['cur_rto'] = table19_calc(hgc.cur_ast_amt, hgc.cur_liab_amt) 
 hgc['net_margin_rto'] = table19_calc(hgc.net_inc_amt, hgc.tot_sales_amt)
 
@@ -127,7 +133,7 @@ mi2013_wo_2014dft.ix[:, 'df_flag'] = np.where(mi2013_wo_2014dft.entityuen.isin(d
 sic_indust = pd.read_excel("H:\\work\\usgc\\2015\\quant\\SIC_Code_List.xlsx", sheetname = "sic_indust")
 
 ######################################################################################################################################################
-mi2013_wo_2014dft.df_flag.value_counts()           					# {0: 2018, 1: 24}
+mi2013_wo_2014dft.df_flag.value_counts()           					# {0: 1138, 1: 16}
 mi2013_wo_2014dft.to_excel(writer, sheet_name = "M&I 2013 Final")
 writer.save()
 
@@ -169,7 +175,7 @@ mi2013_after_sic.sector_group.value_counts()
 mi2013_after_sic = mi2013_after_sic.rename(columns = {'entityuen': 'uen', 'df_flag': 'default_flag'})      #  not only M&I uen {1: 15, 0: 1643},   only M&I uen {1: 14, 0: 1034}
  
 print mi2013_after_sic.default_flag.value_counts(dropna = False)
- 
+mi2013_after_sic['yeartype'] = '2013MI' 
  
 #### verify
 # mi2013_after_sic.ix[:, final_model_vars].count()
@@ -192,7 +198,7 @@ print mi2013_after_sic.default_flag.value_counts(dropna = False)
  
 
 ### final columns needed
-common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking']
+common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking', u'fin_stmt_dt', 'intarchiveid', 'substaxliabilitymemo', 'ds_amt']
 final_model_vars = ['cur_ast_amt', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'tot_debt_amt', 'net_worth_amt', 'tangible_net_worth_amt', 'tot_sales_amt', 'net_inc_amt', 'ebitda_amt', 'dsc', 'yrs_in_bus', 'debt_to_tnw_rto', 'debt_to_ebitda_rto', 'net_margin_rto', 'cur_rto']
 mi2013_after_sic.ix[:, common_vars + final_model_vars].to_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\F2013MI_4_model.xlsx")
 

@@ -2,11 +2,14 @@
 # part 1: ratings in the FACT system, join with the after2012 default list to get defaults
 # part 2: ratings in HBC, 
 
-################################################################## Part II: ratings in HBC  ###########################################################
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
- 
+
+fact_vars = ['uen', 'entity_name', 'final_form_date', 'financialsstatdate', 'businessstartdate', 'source_from', 'us_siccode', 'currentassets', 'total_sales', 'currentliabilities', 'debt', 'tangiblenetworth', 'total_sales', 'ebitda', 'debtservicetotalamount', 'cv_debtservicecoverage_adj', 'cv_currentratio_adj', 'cv_debttotangiblenw_adj', 'cv_yearsinbusiness_adj', 'cv_debt_ebitda_adj']
+hbc_vars = ['sk_entity_id', 'entity_nm', 'eff_dt', 'fin_stmt_dt', 'source_from', 'input_crnrt', 'input_cywb', 'input_dbebt', 'input_dnw', 'input_dsc', 'input_dtnw', 'input_ebiti', 'input_intr', 'input_netpr']
+
+################################################################## Part II: ratings in HBC  ########################################################### 
 
 # read in 2013 model drivers / rating data from HBC
 #bmo2013HBC = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2013\\2013_combined_data.xlsx", sheetname = "HBC_20110101_20131031")     #(4083, 91)
@@ -16,7 +19,7 @@ bmo2013HBC['source_from'] = 'HBC'
 varbmo2013HBC = [x.replace(' ', '_').lower() for x in list(bmo2013HBC)]
 bmo2013HBC.columns = varbmo2013HBC
 # pick from 2012-2-1 to 2012-10-31, since 1)MRA data is in this interval  2)2012-11-1 to 2013-1-31 will be from FACT
-bmo2013HBC_1 = bmo2013HBC.ix[(bmo2013HBC.rnd != 'Y') & (bmo2013HBC.eff_dt <= pd.datetime(2013, 1, 31)) & (bmo2013HBC.eff_dt >= pd.datetime(2012, 2, 1)), ['sk_entity_id', 'entity_nm', 'eff_dt', 'fin_stmt_dt', 'source_from']]
+bmo2013HBC_1 = bmo2013HBC.ix[(bmo2013HBC.rnd != 'Y') & (bmo2013HBC.eff_dt <= pd.datetime(2013, 1, 31)) & (bmo2013HBC.eff_dt >= pd.datetime(2012, 2, 1)), hbc_vars]
 bmo2013HBC_1 = bmo2013HBC_1.rename(columns = {'entity_nm': 'entity_name', 'eff_dt': 'final_form_date'})               #  (2380, 5)
 
  
@@ -41,7 +44,7 @@ bmo2013HBC_2 = pd.merge(bmo2013HBC_1, bmo2013_1, on = 'sk_entity_id', how = 'inn
 sic_indust = pd.read_excel("H:\\work\\usgc\\2015\\quant\\SIC_Code_List.xlsx", sheetname = "sic_indust")
 
 # to get sector_group and remove by sic
-bmo2013HBC_2['insudt'] = bmo2013HBC_2.ussic.replace(dict(zip(sic_indust.sic_code, sic_indust.indust)))
+bmo2013HBC_2['indust'] = bmo2013HBC_2.ussic.replace(dict(zip(sic_indust.sic_code, sic_indust.indust)))
 bmo2013HBC_2['sector_group'] = bmo2013HBC_2.ussic.replace(dict(zip(sic_indust.sic_code, sic_indust.sector_group))) 
 bmo2013HBC_2_after_sic = bmo2013HBC_2.query('sector_group not in ["NONP", "AGRI", "AGSM", "OTHR", "FOST"]') 
 
@@ -62,8 +65,11 @@ bmo2013FACT = pd.read_pickle(u"H:\\work\\usgc\\2015\\quant\\2013\\bmo2013FACT")
 bmo2013FACT['source_from'] = 'FACT'
 varbmo2013FACT = [x.replace(' ', '_').lower() for x in list(bmo2013FACT)]
 bmo2013FACT.columns = varbmo2013FACT
-bmo2013FACT_1 = bmo2013FACT.ix[(bmo2013FACT.rnd != 'Yes') & (bmo2013FACT.final_form_date <= pd.datetime(2013,1,31,23,59, 59)) & (bmo2013FACT.final_form_date >= pd.datetime(2012,2,1,0,0,0)), ['uen', 'entity_name', 'final_form_date', 'financialsstatdate', 'source_from', 'us_siccode']]
-bmo2013FACT_1 = bmo2013FACT_1.rename(columns = {'financialsstatdate': 'fin_stmt_dt', 'us_siccode': 'ussic'})     			# 1590					 
+bmo2013FACT_1 = bmo2013FACT.ix[(bmo2013FACT.rnd != 'Yes') & (bmo2013FACT.final_form_date <= pd.datetime(2013,1,31,23,59, 59)) & (bmo2013FACT.final_form_date >= pd.datetime(2012,2,1,0,0,0)), :]
+bmo2013FACT_1 = bmo2013FACT_1.ix[:, fact_vars]
+bmo2013FACT_1 = bmo2013FACT_1.rename(columns = {'financialsstatdate': 'fin_stmt_dt', 'us_siccode': 'ussic'})     			# 1590	
+bmo2013FACT_1['businessstartdate'] = bmo2013FACT_1.businessstartdate.map(lambda x: pd.to_datetime(x))
+				 
 
 # read in M&I data
 #legacy_mi = pd.read_excel(u"H:\\work\\usgc\\2015\\quant\\2013\\2013_combined_data.xlsx", sheetname = u'legacy_mi_uen_new')

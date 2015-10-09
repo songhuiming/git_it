@@ -1,0 +1,5 @@
+1: Plotting two variables as lines using ggplot2 on the same graph
+http://stackoverflow.com/questions/3777174/plotting-two-variables-as-lines-using-ggplot2-on-the-same-graph
+
+2: How should I do rapid GUI development for R and Octave methods (possibly with Python)?   (总结了各个混合编程的工具)
+http://stackoverflow.com/questions/3691944/how-should-i-do-rapid-gui-development-for-r-and-octave-methods-possibly-with-py

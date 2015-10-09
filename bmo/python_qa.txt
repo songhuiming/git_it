@@ -1,0 +1,97 @@
+1: Using np.where, or another broadcasting technique in pandas dataframe
+http://stackoverflow.com/questions/23922996/using-np-where-or-another-broadcasting-technique-in-pandas-dataframe
+
+2: Pandas: Elementwise multiplication of two dataframes
+http://stackoverflow.com/questions/21022865/pandas-elementwise-multiplication-of-two-dataframes
+
+3: Store NumPy Row and Column Headers
+http://stackoverflow.com/questions/5795748/store-numpy-row-and-column-headers
+
+4: Pandas: Elementwise multiplication of two dataframes
+http://stackoverflow.com/questions/21022865/pandas-elementwise-multiplication-of-two-dataframes
+
+5: Remap values in pandas column with a dict       (replace)
+http://stackoverflow.com/questions/20250771/remap-values-in-pandas-column-with-a-dict
+
+6: binning data in python with scipy/numpy    (np.digitize  or  np.histogram)
+http://stackoverflow.com/questions/6163334/binning-data-in-python-with-scipy-numpy
+
+7: Python: Mapping from intervals to values    (bisect.bisect_left)
+http://stackoverflow.com/questions/1199053/python-mapping-from-intervals-to-values
+
+8: External editor for IPython notebook
+http://stackoverflow.com/questions/15681153/external-editor-for-ipython-notebook
+
+9: python pandas extract unique dates from time series
+http://stackoverflow.com/questions/14673394/python-pandas-extract-unique-dates-from-time-series
+
+10: Data Wrangling with Pandas
+http://nbviewer.ipython.org/gist/fonnesbeck/5850413#Data-Wrangling-with-Pandas
+
+11: Categorical Data
+http://pandas-docs.github.io/pandas-docs-travis/categorical.html
+
+12: bin numeric values with missing in python    pd.cut(x, bins, labels = [bins[:-1]])
+http://stackoverflow.com/questions/28128815/how-to-group-numeric-values-containing-missing-data-into-bins-for-counting-in-py
+
+13: How to sort a dataFrame in python pandas by two or more columns?
+http://stackoverflow.com/questions/17141558/how-to-sort-a-dataframe-in-python-pandas-by-two-or-more-columns
+
+14: python pandas: Remove duplicates by columns A, keeping the row with the highest value in column B
+http://stackoverflow.com/questions/12497402/python-pandas-remove-duplicates-by-columns-a-keeping-the-row-with-the-highest
+
+15: Calculate Pandas DataFrame Time Difference Between Two Columns in Hours and Minutes
+http://stackoverflow.com/questions/22923775/calculate-pandas-dataframe-time-difference-between-two-columns-in-hours-and-minu
+
+16: Comparison of R, statmodels, sklearn for a classification task with logistic regression
+http://stackoverflow.com/questions/28747019/comparison-of-r-statmodels-sklearn-for-a-classification-task-with-logistic-reg
+
+17: Why are the logistic regression results different between statsmodels and R?
+http://stackoverflow.com/questions/27558067/why-are-the-logistic-regression-results-different-between-statsmodels-and-r/27558506#27558506
+
+18: Why can't statsmodels reproduce my R logistic regression results?
+http://stackoverflow.com/questions/22716521/why-cant-statsmodels-reproduce-my-r-logistic-regression-results/22719638#22719638
+
+19: Fitting models using R-style formulas
+http://statsmodels.sourceforge.net/devel/example_formulas.html
+
+20: rpy2 installation error on Windows 8 (Anaconda)
+http://stackoverflow.com/questions/24130310/rpy2-installation-error-on-windows-8-anaconda
+
+21: pandas wider show, wider screening
+http://stackoverflow.com/questions/11707586/python-pandas-widen-output-display
+
+22: ROC/AUC
+http://nbviewer.ipython.org/urls/umich.box.com/shared/static/aouhn2mci77opm3v89vc.ipynb
+http://dept.stat.lsa.umich.edu/~kshedden/Python-Workshop/nhanes_logistic_regression.html
+
+23: break/continue/else/pass/return 
+http://www.tutorialspoint.com/python/python_loop_control.htm
+
+24: Does Python have a string contains method?
+http://stackoverflow.com/questions/3437059/does-python-have-a-string-contains-method
+
+25: Remove rows not .isin('X')
+http://stackoverflow.com/questions/14057007/remove-rows-not-isinx
+
+26: How are categorical variables used when fitting a decision tree in scikit-learn?  (DictVectorizer .toarray())
+http://stats.stackexchange.com/questions/54577/how-are-categorical-variables-used-when-fitting-a-decision-tree-in-scikit-learn
+
+27: How to encode a categorical variable in sklearn?
+http://stackoverflow.com/questions/15021521/how-to-encode-a-categorical-variable-in-sklearn 
+
+28: Get MM-DD-YYYY from pandas Timestamp
+http://stackoverflow.com/questions/19105976/get-mm-dd-yyyy-from-pandas-timestamp
+ 
+29: Python __init__ and self what do they do?
+http://stackoverflow.com/questions/625083/python-init-and-self-what-do-they-do
+
+30: What's the canonical way to check for type in python?
+http://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
+
+31: Large, persistent DataFrame in pandas
+http://stackoverflow.com/questions/11622652/large-persistent-dataframe-in-pandas
+
+
+
+

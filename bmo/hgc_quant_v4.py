@@ -27,6 +27,13 @@ hgc_rename = {'currentassets': 'cur_ast_amt', 'totalassets': 'tot_ast_amt', 'cur
 hgc['tot_liab_amt'] = hgc.currentliabilities + hgc.totalnoncurrentliabilities
 hgc = hgc.rename(columns = hgc_rename)
 
+# new: use (ebitda - substaxliabilitymemo)/debtserviceamount as dsc calculation 
+hgc_dsc_sup = pd.read_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\HGC FACT data (Jul 22 2015).xlsx", sheetname = "GC US data")
+hgc_dsc_sup.columns = [x.replace(' ', '_').lower() for x in list(hgc_dsc_sup)]
+hgc_dsc_sup = hgc_dsc_sup.ix[:, ["intarchiveid", "substaxliabilitymemo"]]
+hgc = pd.merge(hgc, hgc_dsc_sup, on = 'intarchiveid', how = 'left')
+hgc["ebitda_substax"] = np.where(hgc.substaxliabilitymemo.notnull(), hgc.ebitda_amt - hgc.substaxliabilitymemo, hgc.ebitda_amt)
+
 hgc['quant_ranking'] = hgc.quantitativerating.map(dict(zip(msRating, ranking)))
 hgc['final_ranking'] = hgc.final_rating.map(dict(zip(msRating, ranking)))
 
@@ -60,7 +67,9 @@ def yib_calc(x, y):
 	return (x - y) / np.timedelta64(1, 'Y')
 	
 # calculate some ratios
-hgc['dsc'] = table19_calc(hgc.tot_optinc_amt, hgc.ds_amt)
+hgc['dsc'] = table19_calc(hgc.ebitda_substax, hgc.ds_amt)
+hgc['dsc2'] = table19_calc(hgc.net_inc_amt, hgc.ds_amt)
+hgc['dsc3'] = table19_calc(hgc.ebitda_amt, hgc.ds_amt)
 hgc['cur_rto'] = table19_calc(hgc.cur_ast_amt, hgc.cur_liab_amt) 
 hgc['net_margin_rto'] = table19_calc(hgc.net_inc_amt, hgc.tot_sales_amt)
 
@@ -203,9 +212,9 @@ print pd.crosstab(data2014_pw_sic.mi_flag, data2014_pw_sic.default_flag)
 # cur_rto                   3637
 
 data2014_pw_sic['yeartype'] = np.where(data2014_pw_sic.mi_flag == 1, '2014MI', '2014HBC')
-data2014_pw_sic = data2014_pw_sic.rename(columns = {'def_date': 'default_date', 'entityuen': 'uen'})
+data2014_pw_sic = data2014_pw_sic.rename(columns = {'def_date': 'default_date', 'entityuen': 'uen', u'financial_statement_date': 'fin_stmt_dt'})
 
-common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking']
+common_vars = ['sk_entity_id', 'uen', 'final_form_date', 'us_sic', 'default_flag', 'default_date', 'yeartype', 'sector_group', 'quant_ranking', 'final_ranking', u'fin_stmt_dt', 'intarchiveid', 'substaxliabilitymemo', 'ds_amt']
 final_model_vars = ['cur_ast_amt', 'tot_ast_amt', 'cur_liab_amt', 'tot_liab_amt', 'tot_debt_amt', 'net_worth_amt', 'tangible_net_worth_amt', 'tot_sales_amt', 'net_inc_amt', 'ebitda_amt', 'dsc', 'yrs_in_bus', 'debt_to_tnw_rto', 'debt_to_ebitda_rto', 'net_margin_rto', 'cur_rto']
 
 data2014_pw_sic.ix[:, common_vars + final_model_vars].to_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\F2014ALL_4_model.xlsx") 

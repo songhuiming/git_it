@@ -41,6 +41,10 @@ bmo2013HBC_2_after_sic.sort(['uen', 'default_flag', 'final_form_date'], ascendin
 bmo2013HBC_2_after_sic_pw = bmo2013HBC_2_after_sic.drop_duplicates('uen') 											# {0:789, 1: 21}
 
 
+#######################################################   STOP HERE  #############################################################
+
+
+
 # after it is done, concat with bmo2013_FACT_after_sic_pw in hgc_2013_FACT.py for final dedup
 bmo2013_all = pd.concat([bmo2013HBC_2_after_sic_pw, bmo2013_FACT_after_sic_pw], axis = 0)
 bmo2013_all.sort(['uen', 'default_flag', 'final_form_date'], ascending = [True, False, True], inplace = True)

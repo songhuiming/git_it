@@ -10,6 +10,22 @@ hgcdev_all.columns = varhgcdev
 
 hgcdev = hgcdev_all.query('seg2 > 1')
 
+dev_vars = ['sk_entity_id', 'sic_code', 'sector_group', 'default_date', 'default_flag', 'current_assets', 'current_liabilities', 'current_ratio', 'total_assets', 'total_debt', 'ebitda',
+'total_debt_service_amt', 'total_operating_income', 'total_sales', 'debt_to_ebitda', 'debt_to_tangible_net_worth', 'debt_service_coverage', 'net_margin', 'tnw', 'net_profit', 'yrs_in_business']
+
+dev_rename = {'sic_code': 'us_sic', 'current_assets': 'cur_ast_amt', 'current_liabilities': 'cur_liab_amt', 'current_ratio': 'cur_rto', 'total_assets': 'tot_ast_amt', 
+'total_debt': 'tot_debt_amt', 'total_sales': 'tot_sales_amt', 'debt_to_ebitda': 'debt_to_ebitda_rto', 'debt_to_tangible_net_worth': 'debt_to_tnw_rto', 'ebitda': 'ebitda_amt',
+'debt_service_coverage': 'dsc', 'net_margin': 'net_margin_rto', 'tnw': 'tangible_net_worth_amt', 'net_profit': 'net_inc_amt', 'yrs_in_business': 'yrs_in_bus'}
+
+hgcdev['default_flag'] = np.where(hgcdev.default_flag == 'Y', 1, np.where(hgcdev.default_flag == 'N', 0, np.nan))
+
+# pick the non-missing default_flag and remove agri non-profit obligors
+hgcdev_sic = hgcdev.query('default_flag >= 0  & sector_group != "AGRI" & sector_group != "NONP" ')
+hgcdev_sic_final = hgcdev_sic.ix[:, dev_vars]
+hgcdev_sic_final['yeartype'] = '2011Before'
+hgcdev_sic_final = hgcdev_sic_final.rename(columns = dev_rename)
+hgcdev_sic_final.to_excel("H:\\work\\usgc\\2015\\quant\\2015_supp\\hgcdev_sic_remove_df.xlsx")
+
 # the following is not good, because it includes Non-Profit / Agri / Govn
 # good ones: proportion by sector_group
 # hgcdev.query('default_flag == "N"').sector_group.value_counts() / len(hgcdev.query('default_flag == "N"').sector_group)
@@ -21,11 +37,11 @@ hgcdev = hgcdev_all.query('seg2 > 1')
 # overall proportion by sector_group
 hgcdev.sector_group.value_counts() / len(hgcdev.sector_group)
 
-hgcdev_good_sector = hgcdev.query('default_flag == "N" & sector_group != "AGRI" & sector_group != "NONP"')
-hgcdev_bad_sector = hgcdev.query('default_flag == "Y" & sector_group != "AGRI" & sector_group != "NONP"')
+hgcdev_good_sector = hgcdev_sic.query('default_flag == 0')
+hgcdev_bad_sector = hgcdev_sic.query('default_flag == 1')
 
-hgcdev_good_sector.shape        # 804 Good
-hgcdev_bad_sector.shape			# 168 Bad
+print hgcdev_good_sector.shape        # 804 Good
+print hgcdev_bad_sector.shape			# 168 Bad
 
 hgcdev_good_sector.sector_group.value_counts() 
 # SRVC    245
