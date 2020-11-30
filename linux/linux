@@ -129,3 +129,12 @@ The easier answer to this question is two configuration changes in your Putty pr
 In `Window` -> `Behaviour` set your desired Window title.
 In `Terminal` -> `Features` check Disable remote-controlled window title changing.
 
+### 13: cat given lines of a file in linux: https://unix.stackexchange.com/questions/288521/with-the-linux-cat-command-how-do-i-show-only-certain-lines-by-number
+# line 5
+sed -n 5p file
+# line 5 and 8
+sed -n -e 5p -e 8p file
+# range 5~8
+sed -n 5,8p file
+# range 5~8 and 10
+sed -n -e 5,8p -e 10p file
